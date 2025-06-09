@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>韓国出張報告（5月22−24）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .accordion-content {
+            display: none;
+            transition: max-height 0.3s ease-out;
+            overflow: hidden;
+        }
+        .accordion-button.open + .accordion-content {
+            display: block;
+        }
+        .conversation-info {
+            background-color: #e0f2fe; /* light-blue-100 */
+            border-left: 4px solid #0ea5e9; /* sky-500 */
+            padding: 8px 12px;
+            margin-top: 8px;
+            border-radius: 4px;
+        }
+        .section-title {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600; /* font-semibold */
+            margin-bottom: 0.5rem; /* mb-2 */
+            color: #1e3a8a; /* blue-800 */
+        }
+        .sub-section-title {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 500; /* font-medium */
+            margin-top: 1rem; /* mt-4 */
+            margin-bottom: 0.25rem; /* mb-1 */
+            color: #1d4ed8; /* blue-700 */
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+            padding: 1.5rem; /* p-6 */
+            margin-bottom: 1.5rem; /* mb-6 */
+        }
+        .tab-button {
+            padding: 0.75rem 1.5rem; /* py-3 px-6 */
+            border-radius: 0.375rem; /* rounded-md */
+            font-weight: 500; /* font-medium */
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            margin-bottom: 0.5rem; /* mb-2 for wrapping */
+        }
+        .tab-button.active {
+            background-color: #1e40af; /* blue-800 */
+            color: white;
+        }
+        .tab-button:not(.active) {
+            background-color: #e5e7eb; /* gray-200 */
+            color: #374151; /* gray-700 */
+        }
+        .accordion-button {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0.75rem 1rem; /* py-3 px-4 */
+            background-color: #f3f4f6; /* gray-100 */
+            border: 1px solid #e5e7eb; /* border-gray-200 */
+            border-radius: 0.375rem; /* rounded-md */
+            text-align: left;
+            font-weight: 500; /* font-medium */
+            color: #1f2937; /* gray-800 */
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .accordion-button:hover {
+            background-color: #e5e7eb; /* gray-200 */
+        }
+        .accordion-button .arrow {
+            transition: transform 0.3s ease-out;
+        }
+        .accordion-button.open .arrow {
+            transform: rotate(90deg);
+        }
+        .comparison-table, .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .comparison-table th, .comparison-table td, .data-table th, .data-table td {
+            border: 1px solid #e5e7eb; 
+            padding: 0.75rem; 
+            text-align: left;
+        }
+        .comparison-table th, .data-table th {
+            background-color: #f9fafb; 
+            font-weight: 600; 
+        }
+        .comparison-table tbody tr:nth-child(odd), .data-table tbody tr:nth-child(odd) {
+            background-color: #f3f4f6; 
+        }
+        .lang-switch-button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            border: 1px solid #d1d5db; 
+        }
+        .lang-switch-button.active {
+            background-color: #3b82f6; 
+            color: white;
+            border-color: #3b82f6; 
+        }
+        .lang-switch-button:not(.active) {
+            background-color: #f9fafb; 
+            color: #374151; 
+        }
+        .gemini-button {
+            background-color: #fbbf24; 
+            color: #78350f; 
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+        .gemini-button:hover {
+            background-color: #f59e0b; 
+        }
+        .gemini-button svg {
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-right: 0.5rem;
+        }
+        .term-explain-button {
+            background-color: #d1fae5; 
+            color: #065f46; 
+            padding: 0.125rem 0.5rem; 
+            border-radius: 9999px; 
+            font-size: 0.75rem; 
+            font-weight: 500;
+            cursor: pointer;
+            margin-left: 0.25rem;
+            border: 1px solid #6ee7b7; 
+            display: inline-flex;
+            align-items: center;
+        }
+        .term-explain-button:hover {
+            background-color: #a7f3d0; 
+        }
+        .popup {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            z-index: 100;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid #e5e7eb;
+        }
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 99;
+        }
+        .popup-content {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        .popup-close-button {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #9ca3af; 
+        }
+        .popup-close-button:hover {
+            color: #6b7280; 
+        }
+        .loading-spinner {
+            border: 4px solid #f3f4f6; 
+            border-top: 4px solid #3b82f6; 
+            border-radius: 50%;
+            width: 2rem; 
+            height: 2rem; 
+            animation: spin 1s linear infinite;
+            margin: 1rem auto; 
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .benchmark-graph-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.375rem; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 1rem; 
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 p-4 sm:p-6 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <header class="mb-4 text-center">
+            <h1 class="text-3xl sm:text-4xl font-bold text-blue-700" data-lang-ja="韓国出張報告（5月22−24）" data-lang-en="Korea Business Trip Report (May 22-24)">韓国出張報告（5月22−24）</h1>
+        </header>
+
+        <div class="mb-6 flex justify-end space-x-2">
+            <button id="lang-ja" class="lang-switch-button active">日本語</button>
+            <button id="lang-en" class="lang-switch-button">English</button>
+        </div>
+
+        <div class="mb-6 flex flex-wrap justify-center space-x-2 sm:space-x-4">
+            <button class="tab-button active" data-tab-target="company_overview" data-lang-ja="会社概要" data-lang-en="Company Overview">会社概要</button>
+            <button class="tab-button" data-tab-target="danfoss" data-lang-ja="Danfoss社 PCS" data-lang-en="Danfoss PCS">Danfoss社 PCS</button>
+            <button class="tab-button" data-tab-target="destin" data-lang-ja="Destin Power社 PCS" data-lang-en="Destin Power PCS">Destin Power社 PCS</button>
+            <button class="tab-button" data-tab-target="comparison" data-lang-ja="製品比較" data-lang-en="Product Comparison">製品比較</button>
+            <button class="tab-button" data-tab-target="benchmark_graph" data-lang-ja="価格BMグラフ" data-lang-en="Price BM Graph">価格BMグラフ</button>
+            <button class="tab-button" data-tab-target="summary" data-lang-ja="まとめ" data-lang-en="Summary">まとめ</button>
+        </div>
+
+        <div id="company_overview" class="tab-content active">
+            <div class="card">
+                <h2 class="section-title" data-lang-ja="1. 訪問企業概要" data-lang-en="1. Visited Company Overview">1. 訪問企業概要</h2>
+                
+                <div class="mb-6">
+                    <h3 class="sub-section-title text-blue-600">Danfoss</h3>
+                    <p class="text-gray-700" data-lang-ja="デンマークに本社を置く、パワーソリューション、冷暖房、ドライブ技術などを提供するグローバル企業です。特に<strong class='font-semibold'>パワーエレクトロニクス分野</strong>では、産業用ドライブやパワーコンバーターで高い技術力を持ち、エネルギー効率の向上と持続可能性に貢献しています。今回の調査対象である<strong class='font-semibold'>iC7シリーズ</strong>は、同社の<strong class='font-semibold'>液体冷却技術</strong>を活かした高密度・高効率なパワーコンバーターです。" data-lang-en="A global company headquartered in Denmark, providing power solutions, heating/cooling, and drive technologies. Particularly in the <strong class='font-semibold'>power electronics field</strong>, they possess high technological capabilities in industrial drives and power converters, contributing to energy efficiency improvements and sustainability. The <strong class='font-semibold'>iC7 series</strong>, the subject of this investigation, is a high-density, high-efficiency power converter leveraging their <strong class='font-semibold'>liquid cooling technology</strong>.">
+                        デンマークに本社を置く、パワーソリューション、冷暖房、ドライブ技術などを提供するグローバル企業です。特に<strong class='font-semibold'>パワーエレクトロニクス分野</strong>では、産業用ドライブやパワーコンバーターで高い技術力を持ち、エネルギー効率の向上と持続可能性に貢献しています。今回の調査対象である<strong class='font-semibold'>iC7シリーズ</strong>は、同社の<strong class='font-semibold'>液体冷却技術</strong>を活かした高密度・高効率なパワーコンバーターです。
+                    </p>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="sub-section-title text-blue-600">Destin Power</h3>
+                    <p class="text-gray-700" data-lang-ja="韓国を拠点とする、<strong class='font-semibold'>パワーコンバージョンシステム（PCS）</strong>の専門メーカーです。特に<strong class='font-semibold'>エネルギー貯蔵システム（ESS）用PCS</strong>に注力しており、革新的な冷却技術（<strong class='font-semibold'>液浸冷却</strong>など）を積極的に採用しています。高効率、高信頼性、そして過酷な環境にも対応可能なPCSソリューションを提供し、再生可能エネルギーの安定供給や電力系統の安定化に貢献することを目指しています。<strong class='font-semibold'>SAVEENシリーズ</strong>はその代表的な製品ラインです。" data-lang-en="A South Korea-based specialized manufacturer of <strong class='font-semibold'>Power Conversion Systems (PCS)</strong>. They focus particularly on <strong class='font-semibold'>PCS for Energy Storage Systems (ESS)</strong> and actively adopt innovative cooling technologies (such as <strong class='font-semibold'>immersion cooling</strong>). They aim to provide highly efficient, reliable PCS solutions adaptable to harsh environments, contributing to the stable supply of renewable energy and power grid stabilization. The <strong class='font-semibold'>SAVEEN series</strong> is their flagship product line.">
+                        韓国を拠点とする、<strong class='font-semibold'>パワーコンバージョンシステム（PCS）</strong>の専門メーカーです。特に<strong class='font-semibold'>エネルギー貯蔵システム（ESS）用PCS</strong>に注力しており、革新的な冷却技術（<strong class='font-semibold'>液浸冷却</strong>など）を積極的に採用しています。高効率、高信頼性、そして過酷な環境にも対応可能なPCSソリューションを提供し、再生可能エネルギーの安定供給や電力系統の安定化に貢献することを目指しています。<strong class='font-semibold'>SAVEENシリーズ</strong>はその代表的な製品ラインです。
+                    </p>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="sub-section-title text-blue-600">SK enmove</h3>
+                    <p class="text-gray-700" data-lang-key="co_skenmove_summary" data-lang-ja="韓国SKグループの一員で、エネルギー・化学分野で事業を展開。近年はデータセンター、ESS、EV向けに<strong class='font-semibold'>液浸冷却ソリューション</strong>と関連する高品質な<strong class='font-semibold'>熱媒体フルード（例：Therm ESシリーズ）</strong>の開発・提供に注力しています。これにより、バッテリーシステムやEV充電インフラの高度な熱管理と安全性向上に貢献しています。" data-lang-en="A member of South Korea's SK Group, operating in the energy and chemical sectors. In recent years, they have focused on developing and providing <strong class='font-semibold'>immersion cooling solutions</strong> and related high-quality <strong class='font-semibold'>thermal fluids (e.g., Therm ES series)</strong> for data centers, ESS, and EVs. This contributes to advanced thermal management and improved safety for battery systems and EV charging infrastructure.">
+                        韓国SKグループの一員で、エネルギー・化学分野で事業を展開。近年はデータセンター、ESS、EV向けに<strong class='font-semibold'>液浸冷却ソリューション</strong>と関連する高品質な<strong class='font-semibold'>熱媒体フルード（例：Therm ESシリーズ）</strong>の開発・提供に注力しています。これにより、バッテリーシステムやEV充電インフラの高度な熱管理と安全性向上に貢献しています。
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="sub-section-title text-blue-600">SK Signet</h3>
+                    <p class="text-gray-700" data-lang-key="co_sksignet_summary" data-lang-ja="SKグループ傘下のEV充電器メーカーで、米国の超急速充電器市場で高いシェアを誇ります。特に、<strong class='font-semibold'>500A対応の液冷式（油冷式）充電ケーブル</strong>を搭載した「V2 Distributed System」が主力製品の一つです。この技術は、ケーブルを<strong class='font-semibold'>大幅に軽量化</strong>し、最大<strong class='font-semibold'>400kWの高出力</strong>を維持しつつ操作性を向上させ、発熱問題を解決します。CCS1とNACSコネクタに両対応し、最大4台のEV同時充電が可能です。" data-lang-en="An EV charger manufacturer under the SK Group, holding a high share in the U.S. ultra-fast charger market. A key product is the 'V2 Distributed System,' featuring <strong class='font-semibold'>500A liquid-cooled (oil-cooled) charging cables</strong>. This technology significantly <strong class='font-semibold'>reduces cable weight</strong>, improves usability while maintaining high power output up to <strong class='font-semibold'>400kW</strong>, and solves heat issues. It supports both CCS1 and NACS connectors and can charge up to four EVs simultaneously.">
+                        SKグループ傘下のEV充電器メーカーで、米国の超急速充電器市場で高いシェアを誇ります。特に、<strong class='font-semibold'>500A対応の液冷式（油冷式）充電ケーブル</strong>を搭載した「V2 Distributed System」が主力製品の一つです。この技術は、ケーブルを<strong class='font-semibold'>大幅に軽量化</strong>し、最大<strong class='font-semibold'>400kWの高出力</strong>を維持しつつ操作性を向上させ、発熱問題を解決します。CCS1とNACSコネクタに両対応し、最大4台のEV同時充電が可能です。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="danfoss" class="tab-content">
+            <div class="card">
+                <h2 class="section-title" data-lang-ja="2. Danfoss社 PCS (iC7シリーズ)" data-lang-en="2. Danfoss PCS (iC7 Series)">2. Danfoss社 PCS (iC7シリーズ)</h2>
+                <p class="mb-4" data-lang-ja="Danfoss社の<strong class='font-semibold'>iC7シリーズ</strong>は、<strong class='font-semibold'>液体冷却システムモジュール</strong>を特徴とするパワーコンバーターであり、<strong class='font-semibold'>高いパワー密度</strong>と<strong class='font-semibold'>柔軟な統合性</strong>を提供します。" data-lang-en="Danfoss's <strong class='font-semibold'>iC7 series</strong> is a power converter featuring <strong class='font-semibold'>liquid cooling system modules</strong>, offering <strong class='font-semibold'>high power density</strong> and <strong class='font-semibold'>flexible integration</strong>.">Danfoss社の<strong class='font-semibold'>iC7シリーズ</strong>は、<strong class='font-semibold'>液体冷却システムモジュール</strong>を特徴とするパワーコンバーターであり、<strong class='font-semibold'>高いパワー密度</strong>と<strong class='font-semibold'>柔軟な統合性</strong>を提供します。</p>
+
+                <div>
+                    <button class="accordion-button">
+                        <span data-lang-ja="2.1. 主な特徴" data-lang-en="2.1. Main Features">2.1. 主な特徴</span>
+                        <span class="arrow">&#9654;</span>
+                    </button>
+                    <div class="accordion-content p-4 bg-white border border-t-0 rounded-b-md">
+                        <h3 class="sub-section-title" data-lang-ja="モジュール設計とカスタマイズ性" data-lang-en="Modular Design and Customizability"><strong class="font-semibold">モジュール設計</strong>とカスタマイズ性
+                            <button class="term-explain-button" data-term-ja="モジュール設計" data-term-en="Modular Design">✨<span data-lang-key="explain_term_button" data-lang-ja="解説" data-lang-en="Explain">解説</span></button>
+                        </h3>
+                        <ul class="list-disc list-inside space-y-1 mb-2">
+                            <li data-lang-ja="インバーターモジュール(INU)、AFEモジュール、グリッドコンバーター(GC)、DC/DCコンバーター等のシステムモジュールで構成され、組み合わせにより多様なアプリケーションに対応可能です。" data-lang-en="Composed of system modules such as inverter modules (INU), AFE modules, grid converters (GC), and DC/DC converters, adaptable to various applications through combination.">インバーターモジュール(INU)、AFEモジュール、グリッドコンバーター(GC)、DC/DCコンバーター等のシステムモジュールで構成され、組み合わせにより多様なアプリケーションに対応可能です。</li>
+                            <li data-lang-ja="複数モジュールの並列接続により<strong class='font-semibold'>大容量化が可能</strong>（INUは最大<strong class='font-semibold'>6400A</strong>）。" data-lang-en="<strong class='font-semibold'>Large capacity achievable</strong> through parallel connection of multiple modules (INU up to <strong class='font-semibold'>6400A</strong>).">複数モジュールの並列接続により<strong class='font-semibold'>大容量化が可能</strong>（INUは最大<strong class='font-semibold'>6400A</strong>）。</li>
+                            <li data-lang-ja="システムモジュール単体またはフィルター等内蔵の統合ユニットを選択可能。" data-lang-en="System modules alone or integrated units with built-in filters, etc., can be selected.">システムモジュール単体またはフィルター等内蔵の統合ユニットを選択可能。</li>
+                            <li data-lang-ja="最大<strong class='font-semibold'>10個のオプションボード</strong>を追加でき、制御機能を拡張可能。" data-lang-en="Up to <strong class='font-semibold'>10 option boards</strong> can be added to expand control functions.">最大<strong class='font-semibold'>10個のオプションボード</strong>を追加でき、制御機能を拡張可能。</li>
+                        </ul>
+                        <div class="conversation-info">
+                            <p data-lang-ja="[会話情報] <strong class='font-semibold'>モジュール設計</strong>により、PXインバーターとしての販売や、INUのみ購入し中国でエンクロージャー等を調達することも可能（サポート有）。" data-lang-en="[Conversation Info] Due to <strong class='font-semibold'>modular design</strong>, it's possible to sell as a PX inverter or purchase only the INU and procure enclosures, etc., from China (support available)."><strong>[会話情報]</strong> <strong class='font-semibold'>モジュール設計</strong>により、PXインバーターとしての販売や、INUのみ購入し中国でエンクロージャー等を調達することも可能（サポート有）。</p>
+                        </div>
+
+                        <h3 class="sub-section-title" data-lang-ja="冷却方式" data-lang-en="Cooling Method"><strong class="font-semibold">冷却方式</strong>
+                             <button class="term-explain-button" data-term-ja="液体冷却" data-term-en="Liquid Cooling">✨<span data-lang-key="explain_term_button" data-lang-ja="解説" data-lang-en="Explain">解説</span></button>
+                        </h3>
+                        <ul class="list-disc list-inside space-y-1 mb-2">
+                            <li data-lang-ja="<strong class='font-semibold'>液体冷却</strong>を採用し、業界最高水準の<strong class='font-semibold'>パワー密度</strong>と設置スペース・重量の削減を実現。" data-lang-en="Employs <strong class='font-semibold'>liquid cooling</strong>, achieving industry-leading <strong class='font-semibold'>power density</strong> and reduction in installation space and weight."><strong class='font-semibold'>液体冷却</strong>を採用し、業界最高水準の<strong class='font-semibold'>パワー密度</strong>と設置スペース・重量の削減を実現。</li>
+                            <li data-lang-ja="<strong class='font-semibold'>廃熱再利用</strong>によるエネルギー効率向上。" data-lang-en="Improved energy efficiency through <strong class='font-semibold'>waste heat recovery</strong>."><strong class='font-semibold'>廃熱再利用</strong>によるエネルギー効率向上。</li>
+                            <li data-lang-ja="冷却水温度：<strong class='font-semibold'>-10℃～45℃</strong>（一部38℃）、周囲温度：<strong class='font-semibold'>-15℃～60℃</strong>で定格運転可能。" data-lang-en="Coolant temperature: <strong class='font-semibold'>-10°C to 45°C</strong> (some products 38°C), ambient temperature: <strong class='font-semibold'>-15°C to 60°C</strong> for rated operation.">冷却水温度：<strong class='font-semibold'>-10℃～45℃</strong>（一部38℃）、周囲温度：<strong class='font-semibold'>-15℃～60℃</strong>で定格運転可能。</li>
+                        </ul>
+                        <div class="conversation-info">
+                            <p data-lang-ja="[会話情報] <strong class='font-semibold'>プレート型熱交換器</strong>を利用。空冷比で<strong class='font-semibold'>損失が大幅に低く</strong>、冷却効率が高い。ファン数が少なく<strong class='font-semibold'>静音性も高い</strong>。" data-lang-en="[Conversation Info] Uses <strong class='font-semibold'>plate heat exchangers</strong>. <strong class='font-semibold'>Significantly lower losses</strong> and higher cooling efficiency compared to air cooling. Fewer fans result in <strong class='font-semibold'>high quietness</strong>."><strong>[会話情報]</strong> <strong class='font-semibold'>プレート型熱交換器</strong>を利用。空冷比で<strong class='font-semibold'>損失が大幅に低く</strong>、冷却効率が高い。ファン数が少なく<strong class='font-semibold'>静音性も高い</strong>。</p>
+                        </div>
+
+                        <h3 class="sub-section-title" data-lang-ja="IGBT" data-lang-en="IGBT"><strong class="font-semibold">IGBT</strong>
+                            <button class="term-explain-button" data-term-ja="IGBT" data-term-en="IGBT">✨<span data-lang-key="explain_term_button" data-lang-ja="解説" data-lang-en="Explain">解説</span></button>
+                        </h3>
+                        <div class="conversation-info">
+                            <p data-lang-ja="[会話情報] インフィニオン、東芝、三菱、セミクロン（資本関係あり）などのメーカー製IGBTを使用。" data-lang-en="[Conversation Info] Uses IGBTs from manufacturers like Infineon, Toshiba, Mitsubishi, and Semikron (capital relationship)."><strong>[会話情報]</strong> インフィニオン、東芝、三菱、セミクロン（資本関係あり）などのメーカー製IGBTを使用。</p>
+                        </div>
+                        <h3 class="sub-section-title" data-lang-ja="堅牢性と信頼性" data-lang-en="Robustness and Reliability">堅牢性と信頼性</h3>
+                        <ul class="list-disc list-inside space-y-1 mb-2">
+                            <li data-lang-ja="厳しい環境条件（振動、温度、湿度、塵埃/水分）に対応。<strong class='font-semibold'>IP55</strong>の電子機器コンパートメント。" data-lang-en="Resistant to harsh environmental conditions (vibration, temperature, humidity, dust/moisture). <strong class='font-semibold'>IP55</strong> electronics compartment.">厳しい環境条件（振動、温度、湿度、塵埃/水分）に対応。<strong class='font-semibold'>IP55</strong>の電子機器コンパートメント。</li>
+                        </ul>
+                        <div class="conversation-info">
+                            <p data-lang-ja="[会話情報] <strong class='font-semibold'>IP等級の高さ</strong>と<strong class='font-semibold'>故障の少なさ</strong>が船舶向け認証の鍵。液体冷却による熱負荷低減も寄与。" data-lang-en="[Conversation Info] <strong class='font-semibold'>High IP rating</strong> and <strong class='font-semibold'>low failure rate</strong> are key for marine certification. Reduced thermal load due to liquid cooling also contributes."><strong>[会話情報]</strong> <strong class='font-semibold'>IP等級の高さ</strong>と<strong class='font-semibold'>故障の少なさ</strong>が船舶向け認証の鍵。液体冷却による熱負荷低減も寄与。</p>
+                        </div>
+
+                        <h3 class="sub-section-title" data-lang-ja="認証" data-lang-en="Certifications">認証</h3>
+                        <ul class="list-disc list-inside space-y-1 mb-2">
+                            <li data-lang-ja="主要船級協会（DNV, ABS, LR, BV, CCS）の型式承認を取得済みまたは取得中。" data-lang-en="Type approval obtained or pending from major classification societies (DNV, ABS, LR, BV, CCS).">主要船級協会（DNV, ABS, LR, BV, CCS）の型式承認を取得済みまたは取得中。</li>
+                        </ul>
+                        <div class="conversation-info">
+                            <p data-lang-ja="[会話情報] <strong class='font-semibold'>船舶向け認証取得済み</strong>。" data-lang-en="[Conversation Info] <strong class='font-semibold'>Marine certifications obtained</strong>."><strong>[会話情報]</strong> <strong class='font-semibold'>船舶向け認証取得済み</strong>。</p>
+                        </div>
+                    </div>
+                </div>
+                 <div class="mt-4">
+                    <button class="accordion-button">
+                        <span data-lang-ja="2.2. コストと電圧対応" data-lang-en="2.2. Cost and Voltage Compatibility">2.2. コストと電圧対応</span>
+                        <span class="arrow">&#9654;</span>
+                    </button>
+                    <div class="accordion-content p-4 bg-white border border-t-0 rounded-b-md">
+                        <h3 class="sub-section-title" data-lang-ja="コスト" data-lang-en="Cost">コスト</h3>
+                        <div class="conversation-info">
+                             <p data-lang-ja="[会話情報] <strong class='font-semibold'>1000kWクラスで2000万円弱程度</strong>。MD（競合/旧モデル？）と比較して<strong class='font-semibold'>価格競争力あり</strong>。現地工場での生産が理由の可能性（要確認）。" data-lang-en="[Conversation Info] <strong class='font-semibold'>Around just under 20 million JPY for a 1000kW class unit</strong>. <strong class='font-semibold'>Price competitive</strong> compared to MD (competitor/old model?). Possibility of local factory production as a reason (to be confirmed)."><strong>[会話情報]</strong> <strong class='font-semibold'>1000kWクラスで2000万円弱程度</strong>。MD（競合/旧モデル？）と比較して<strong class='font-semibold'>価格競争力あり</strong>。現地工場での生産が理由の可能性（要確認）。</p>
+                        </div>
+                        <h3 class="sub-section-title" data-lang-ja="電圧対応" data-lang-en="Voltage Compatibility">電圧対応</h3>
+                        <ul class="list-disc list-inside space-y-1 mb-2">
+                            <li data-lang-ja="最大DC電圧クラス: <strong class='font-semibold'>07 (640-1100V DC)</strong>, <strong class='font-semibold'>B5 (465-800V DC)</strong>。" data-lang-en="Max DC voltage class: <strong class='font-semibold'>07 (640-1100V DC)</strong>, <strong class='font-semibold'>B5 (465-800V DC)</strong>.">最大DC電圧クラス: <strong class='font-semibold'>07 (640-1100V DC)</strong>, <strong class='font-semibold'>B5 (465-800V DC)</strong>。</li>
+                        </ul>
+                        <div class="conversation-info">
+                            <p data-lang-ja="[会話情報] <strong class='font-semibold'>1500V対応は現在開発中</strong>。一部試験運用ユニットあり。" data-lang-en="[Conversation Info] <strong class='font-semibold'>1500V compatibility currently under development</strong>. Some trial units exist."><strong>[会話情報]</strong> <strong class='font-semibold'>1500V対応は現在開発中</strong>。一部試験運用ユニットあり。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button class="accordion-button">
+                        <span data-lang-ja="2.3. 今後の開発" data-lang-en="2.3. Future Development">2.3. 今後の開発</span>
+                        <span class="arrow">&#9654;</span>
+                    </button>
+                    <div class="accordion-content p-4 bg-white border border-t-0 rounded-b-md">
+                        <div class="conversation-info">
+                            <p data-lang-ja="[会話情報] <strong class='font-semibold'>ラック型のインバーターを開発中</strong>。" data-lang-en="[Conversation Info] <strong class='font-semibold'>Developing rack-type inverters</strong>."><strong>[会話情報]</strong> <strong class='font-semibold'>ラック型のインバーターを開発中</strong>。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <button class="accordion-button">
+                        <span data-lang-ja="2.4. デジタルツール" data-lang-en="2.4. Digital Tools">2.4. デジタルツール</span>
+                        <span class="arrow">&#9654;</span>
+                    </button>
+                    <div class="accordion-content p-4 bg-white border border-t-0 rounded-b-md">
+                        <p data-lang-ja="<strong class='font-semibold'>MyDrive® Suite</strong>: 製品選定、サイジング、シミュレーションツールを提供し、開発期間短縮とリスク低減に貢献。" data-lang-en="<strong class='font-semibold'>MyDrive® Suite</strong>: Provides product selection, sizing, and simulation tools, contributing to reduced development time and risk."><strong class='font-semibold'>MyDrive® Suite</strong>: 製品選定、サイジング、シミュレーションツールを提供し、開発期間短縮とリスク低減に貢献。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="destin" class="tab-content">
+            <div class="card">
+                <h2 class="section-title" data-lang-ja="3. Destin Power社 PCS" data-lang-en="3. Destin Power PCS">3. Destin Power社 PCS</h2>
+                <p class="mb-4" data-lang-ja="Destin Power社は、特に<strong class='font-semibold'>ESS用PCS</strong>に注力しており、持続可能なエネルギー革新を目指しています。" data-lang-en="Destin Power focuses particularly on <strong class='font-semibold'>PCS for ESS</strong>, aiming for sustainable energy innovation.">Destin Power社は、特に<strong class='font-semibold'>ESS用PCS</strong>に注力しており、持続可能なエネルギー革新を目指しています。</p>
+                <div>
+                    <button class="accordion-button">
+                        <span data-lang-ja="3.1. 主な特徴" data-lang-en="3.1. Main Features">3.1. 主な特徴</span>
+                        <span class="arrow">&#9654;</span>
+                    </button>
+                    <div class="accordion-content p-4 bg-white border border-t-0 rounded-b-md">
+                        <h3 class="sub-section-title" data-lang-ja="液浸冷却技術" data-lang-en="Immersion Cooling Technology"><strong class="font-semibold">液浸冷却技術</strong>
+                            <button class="term-explain-button" data-term-ja="液浸冷却" data-term-en="Immersion Cooling">✨<span data-lang-key="explain_term_button" data-lang-ja="解説" data-lang-en="Explain">解説</span></button>
+                        </h3>
+                        <ul class="list-disc list-inside space-y-1 mb-2">
+                            <li data-lang-ja="特に<strong class='font-semibold'>高容量ESS用PCS</strong>で<strong class='font-semibold'>液浸冷却</strong>を採用。" data-lang-en="Employs <strong class='font-semibold'>immersion cooling</strong>, especially for <strong class='font-semibold'>high-capacity ESS PCS</strong>.">特に<strong class='font-semibold'>高容量ESS用PCS</strong>で<strong class='font-semibold'>液浸冷却</strong>を採用。</li>
+                            <li data-lang-ja="冷却システム：PEBB TANK（IGBT格納部）、REACTOR TANKをCDUからのクーラントで直接冷却。熱交換器で外部冷却源（チラー等）へ熱を伝達。" data-lang-en="Cooling system: PEBB TANK (IGBT housing) and REACTOR TANK are directly cooled by coolant from a CDU. Heat is transferred to an external cooling source (chiller, etc.) via a heat exchanger.">冷却システム：PEBB TANK（IGBT格納部）、REACTOR TANKをCDUからのクーラントで直接冷却。熱交換器で外部冷却源（チラー等）へ熱を伝達。</li>
+                        </ul>
+                         <div class="conversation-info">
+                            <p data-lang-ja="[会話情報] IGBT基盤とリアクトルを別々のケースに入れ、<strong class='font-semibold'>絶縁性オイルを充填</strong>して冷却（<strong class='font-semibold'>オイルシーリング</strong>）。これによりPCS筐体は<strong class='font-semibold'>IP65以上</strong>の高防塵防水性能を確保。" data-lang-en="[Conversation Info] IGBT board and reactor are placed in separate cases and cooled by <strong class='font-semibold'>filling with insulating oil</strong> (<strong class='font-semibold'>oil sealing</strong>). This ensures high dust/water proofing (<strong class='font-semibold'>IP65+</strong>) for the PCS enclosure."><strong>[会話情報]</strong> IGBT基盤とリアクトルを別々のケースに入れ、<strong class='font-semibold'>絶縁性オイルを充填</strong>して冷却（<strong class='font-semibold'>オイルシーリング</strong>）。これによりPCS筐体は<strong class='font-semibold'>IP65以上</strong>の高防塵防水性能を確保。</p>
+                            <p data-lang-ja="[会話情報] 外部水源（海水・淡水）利用の<strong class='font-semibold'>プレート型熱交換器</strong>を採用。冷却回路は<strong class='font-semibold'>分離設計</strong>（外部水と機器冷却水は非接触）。" data-lang-en="[Conversation Info] Employs <strong class='font-semibold'>plate heat exchangers</strong> using external water sources (seawater/freshwater). The cooling circuit is a <strong class='font-semibold'>separate design</strong> (external water and equipment coolant do not directly contact)."><strong>[会話情報]</strong> 外部水源（海水・淡水）利用の<strong class='font-semibold'>プレート型熱交換器</strong>を採用。冷却回路は<strong class='font-semibold'>分離設計</strong>（外部水と機器冷却水は非接触）。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <button class="accordion-button">
+                        <span data-lang-ja="3.2. 製品情報 (SAVEENシリーズ)" data-lang-en="3.2. Product Information (SAVEEN Series)">3.2. 製品情報 (SAVEENシリーズ)</span>
+                        <span class="arrow">&#9654;</span>
+                    </button>
+                    <div class="accordion-content p-4 bg-white border border-t-0 rounded-b-md">
+                        <p data-lang-ja="製品名: ESS用PCS「<strong class='font-semibold'>SAVEEN</strong>」。液浸冷却採用の大型PCSは「<strong class='font-semibold'>SAVEEN IM 4000</strong>」。" data-lang-en="Product name: ESS PCS '<strong class='font-semibold'>SAVEEN</strong>'. Large PCS employing immersion cooling is '<strong class='font-semibold'>SAVEEN IM 4000</strong>'.">製品名: ESS用PCS「<strong class='font-semibold'>SAVEEN</strong>」。液浸冷却採用の大型PCSは「<strong class='font-semibold'>SAVEEN IM 4000</strong>」。</p>
+                        <p data-lang-ja="実績: 国内外で合計<strong class='font-semibold'>519台</strong>、<strong class='font-semibold'>474MW</strong>出荷 (2024年末時点)。" data-lang-en="Track record: Total of <strong class='font-semibold'>519 units</strong>, <strong class='font-semibold'>474MW</strong> shipped domestically and internationally (as of end 2024).">実績: 国内外で合計<strong class='font-semibold'>519台</strong>、<strong class='font-semibold'>474MW</strong>出荷 (2024年末時点)。</p>
+                        <h3 class="sub-section-title" data-lang-ja="SAVEEN IM 4000 仕様" data-lang-en="SAVEEN IM 4000 Specifications"><strong class="font-semibold">SAVEEN IM 4000</strong> 仕様</h3>
+                        <ul class="list-disc list-inside space-y-1 mb-2">
+                            <li data-lang-ja="構成: <strong class='font-semibold'>4MW</strong>ステーション" data-lang-en="Configuration: <strong class='font-semibold'>4MW</strong> station">構成: <strong class='font-semibold'>4MW</strong>ステーション</li>
+                            <li data-lang-ja="最大DC許容電圧: <strong class='font-semibold'>1,500V</strong>" data-lang-en="Max DC allowable voltage: <strong class='font-semibold'>1,500V</strong>">最大DC許容電圧: <strong class='font-semibold'>1,500V</strong></li>
+                            <li data-lang-ja="定格電力: <strong class='font-semibold'>4,000kW</strong>" data-lang-en="Rated power: <strong class='font-semibold'>4,000kW</strong>">定格電力: <strong class='font-semibold'>4,000kW</strong></li>
+                            <li data-lang-ja="系統電圧: <strong class='font-semibold'>690V</strong>" data-lang-en="Grid voltage: <strong class='font-semibold'>690V</strong>">系統電圧: <strong class='font-semibold'>690V</strong></li>
+                            <li data-lang-ja="通信: Modbus RTU/TCP, IEC61850, CAN" data-lang-en="Communication: Modbus RTU/TCP, IEC61850, CAN">通信: Modbus RTU/TCP, IEC61850, CAN</li>
+                            <li data-lang-ja="保護レベル: <strong class='font-semibold'>IP65 / NEMA 3R</strong>" data-lang-en="Protection level: <strong class='font-semibold'>IP65 / NEMA 3R</strong>">保護レベル: <strong class='font-semibold'>IP65 / NEMA 3R</strong></li>
+                            <li data-lang-ja="運転温度範囲: <strong class='font-semibold'>-20℃ ～ +50℃</strong> (<strong class='font-semibold'>ディレーティングなし</strong>)" data-lang-en="Operating temperature range: <strong class='font-semibold'>-20°C to +50°C</strong> (<strong class='font-semibold'>no derating</strong>)">運転温度範囲: <strong class='font-semibold'>-20℃ ～ +50℃</strong> (<strong class='font-semibold'>ディレーティングなし</strong>)
+                                <button class="term-explain-button" data-term-ja="ディレーティング" data-term-en="Derating">✨<span data-lang-key="explain_term_button" data-lang-ja="解説" data-lang-en="Explain">解説</span></button>
+                            </li>
+                        </ul>
+                        <p data-lang-ja="設計: <strong class='font-semibold'>モジュール設計</strong>による容易なメンテナンス性。<strong class='font-semibold'>1+n設計</strong>による高い信頼性。<strong class='font-semibold'>3レベル技術</strong>。外部空気遮断により過酷環境に適応。" data-lang-en="Design: Easy maintenance due to <strong class='font-semibold'>modular design</strong>. High reliability with <strong class='font-semibold'>1+n design</strong>. <strong class='font-semibold'>3-level technology</strong>. Adaptable to harsh environments by blocking external air.">設計: <strong class='font-semibold'>モジュール設計</strong>による容易なメンテナンス性。<strong class='font-semibold'>1+n設計</strong>による高い信頼性。<strong class='font-semibold'>3レベル技術</strong>。外部空気遮断により過酷環境に適応。</p>
+                    </div>
+                </div>
+                 <div class="mt-4">
+                    <button class="accordion-button">
+                        <span data-lang-ja="3.3. 液浸冷却のメリット" data-lang-en="3.3. Advantages of Immersion Cooling">3.3. 液浸冷却のメリット</span>
+                        <span class="arrow">&#9654;</span>
+                    </button>
+                    <div class="accordion-content p-4 bg-white border border-t-0 rounded-b-md">
+                        <ul class="list-disc list-inside space-y-1 mb-2">
+                            <li data-lang-ja="電子部品の<strong class='font-semibold'>故障原因を削減</strong>（最大78%とされる要因）。" data-lang-en="<strong class='font-semibold'>Reduces causes of electronic component failure</strong> (factors said to be up to 78%).">電子部品の<strong class='font-semibold'>故障原因を削減</strong>（最大78%とされる要因）。</li>
+                            <li data-lang-ja="空冷式比で部品損傷や<strong class='font-semibold'>火災リスクを最小限に抑制</strong>。" data-lang-en="<strong class='font-semibold'>Minimizes component damage and fire risk</strong> compared to air-cooled systems.">空冷式比で部品損傷や<strong class='font-semibold'>火災リスクを最小限に抑制</strong>。</li>
+                            <li data-lang-ja="オイル封入による<strong class='font-semibold'>IP65以上</strong>の高防塵防水性能（高湿度環境、産業用途で特に有効）。" data-lang-en="<strong class='font-semibold'>High dust/water proofing (IP65+)</strong> due to oil sealing (particularly effective in high-humidity environments and industrial applications).">オイル封入による<strong class='font-semibold'>IP65以上</strong>の高防塵防水性能（高湿度環境、産業用途で特に有効）。</li>
+                        </ul>
+                        <div class="conversation-info">
+                            <p data-lang-ja="[会話情報] <strong class='font-semibold'>メンテナンス頻度の低減</strong>期待。" data-lang-en="[Conversation Info] Expectation of <strong class='font-semibold'>reduced maintenance frequency</strong>."><strong>[会話情報]</strong> <strong class='font-semibold'>メンテナンス頻度の低減</strong>期待。</p>
+                            <p data-lang-ja="[会話情報] <strong class='font-semibold'>CAPEX（設備投資）の削減</strong>期待。" data-lang-en="[Conversation Info] Expectation of <strong class='font-semibold'>CAPEX reduction</strong>."><strong>[会話情報]</strong> <strong class='font-semibold'>CAPEX（設備投資）の削減</strong>期待。</p>
+                            <p data-lang-ja="[会話情報] 優れた冷却性能により<strong class='font-semibold'>電力容量が増加</strong>し、<strong class='font-semibold'>コスト競争力が向上</strong>。" data-lang-en="[Conversation Info] <strong class='font-semibold'>Increased power capacity</strong> due to excellent cooling performance, <strong class='font-semibold'>improving cost competitiveness</strong>."><strong>[会話情報]</strong> 優れた冷却性能により<strong class='font-semibold'>電力容量が増加</strong>し、<strong class='font-semibold'>コスト競争力が向上</strong>。</p>
+                            <ul class="list-disc list-inside ml-4 space-y-1">
+                                <li data-lang-ja="<strong class='font-semibold'>50℃までの環境温度で電力ディレーティングなし</strong>運転可能。" data-lang-en="Operation possible <strong class='font-semibold'>without power derating at ambient temperatures up to 50°C</strong>."><strong class='font-semibold'>50℃までの環境温度で電力ディレーティングなし</strong>運転可能。</li>
+                                <li data-lang-ja="IGBT定格電力の<strong class='font-semibold'>1.5倍運転</strong>、インダクターの安定した運転が可能。" data-lang-en="Operation at <strong class='font-semibold'>1.5 times IGBT rated power</strong> and stable inductor operation possible.">IGBT定格電力の<strong class='font-semibold'>1.5倍運転</strong>、インダクターの安定した運転が可能。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <button class="accordion-button">
+                        <span data-lang-ja="3.4. 開発スケジュールとコスト" data-lang-en="3.4. Development Schedule and Cost">3.4. 開発スケジュールとコスト</span>
+                        <span class="arrow">&#9654;</span>
+                    </button>
+                    <div class="accordion-content p-4 bg-white border border-t-0 rounded-b-md">
+                        <h3 class="sub-section-title" data-lang-ja="開発スケジュール" data-lang-en="Development Schedule">開発スケジュール</h3>
+                        <p data-lang-ja="SAVEEN IM 4000は<strong class='font-semibold'>2025年商用化予定</strong>。" data-lang-en="SAVEEN IM 4000 scheduled for <strong class='font-semibold'>commercialization in 2025</strong>.">SAVEEN IM 4000は<strong class='font-semibold'>2025年商用化予定</strong>。</p>
+                        <h3 class="sub-section-title" data-lang-ja="コストレベル" data-lang-en="Cost Level">コストレベル</h3>
+                        <div class="conversation-info">
+                            <p data-lang-ja="[会話情報] 液浸冷却でも、空冷で必要な部品が不要になることや、冷却性能が高いため性能を1.5倍程度まで引き出せるため、スペックダウンが可能であり、結果として<strong class='font-semibold'>コスト競争力があるレベルになる可能性</strong>。" data-lang-en="[Conversation Info] Even with immersion cooling, components needed for air cooling become unnecessary, and since cooling performance is high, performance can be drawn out to about 1.5 times, allowing for spec-down, <strong class='font-semibold'>potentially resulting in a cost-competitive level</strong>."><strong>[会話情報]</strong> 液浸冷却でも、空冷で必要な部品が不要になることや、冷却性能が高いため性能を1.5倍程度まで引き出せるため、スペックダウンが可能であり、結果として<strong class='font-semibold'>コスト競争力があるレベルになる可能性</strong>。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button class="accordion-button">
+                        <span data-lang-ja="3.5. 信頼性と火災事例" data-lang-en="3.5. Reliability and Fire Incidents">3.5. 信頼性と火災事例</span>
+                        <span class="arrow">&#9654;</span>
+                    </button>
+                    <div class="accordion-content p-4 bg-white border border-t-0 rounded-b-md">
+                        <h3 class="sub-section-title" data-lang-ja="信頼性" data-lang-en="Reliability">信頼性</h3>
+                        <div class="conversation-info">
+                            <p data-lang-ja="[会話情報] 液浸冷却による物理的遮断で<strong class='font-semibold'>故障・火災リスク低減期待</strong>。" data-lang-en="[Conversation Info] Expectation of <strong class='font-semibold'>reduced failure/fire risk</strong> due to physical isolation by immersion cooling."><strong>[会話情報]</strong> 液浸冷却による物理的遮断で<strong class='font-semibold'>故障・火災リスク低減期待</strong>。</p>
+                        </div>
+                        <h3 class="sub-section-title" data-lang-ja="火災事例" data-lang-en="Fire Incidents">火災事例</h3>
+                        <div class="conversation-info">
+                            <p data-lang-ja="[会話情報] 2019年にLG製バッテリーとの組み合わせで火災事故発生。LG側バッテリー起因とみられるが、力関係によりDestin Power側も責任を負うことになった経緯があるとのことです（ソース資料外情報）。" data-lang-en="[Conversation Info] A fire incident occurred in 2019 in combination with LG batteries. It seems the issue originated from LG's batteries, but due to power dynamics, Destin Power also had to take responsibility (information not in source material)."><strong>[会話情報]</strong> 2019年にLG製バッテリーとの組み合わせで火災事故発生。LG側バッテリー起因とみられるが、力関係によりDestin Power側も責任を負うことになった経緯があるとのことです（ソース資料外情報）。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="comparison" class="tab-content">
+            <div class="card">
+                <h2 class="section-title" data-lang-ja="4. 製品比較: Danfoss vs Destin Power" data-lang-en="4. Product Comparison: Danfoss vs Destin Power">4. 製品比較: Danfoss vs Destin Power</h2>
+                <p class="mb-4" data-lang-ja="Danfoss社とDestin Power社のPCSに関する主な特徴を比較します。" data-lang-en="Compares the main features of PCS from Danfoss and Destin Power.">Danfoss社とDestin Power社のPCSに関する主な特徴を比較します。</p>
+                <div class="overflow-x-auto">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th data-lang-ja="比較項目" data-lang-en="Comparison Item">比較項目</th>
+                                <th data-lang-ja="Danfoss (iC7シリーズ)" data-lang-en="Danfoss (iC7 Series)">Danfoss (iC7シリーズ)</th>
+                                <th data-lang-ja="Destin Power (SAVEENシリーズ)" data-lang-en="Destin Power (SAVEEN Series)">Destin Power (SAVEENシリーズ)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-lang-ja="主な冷却方式" data-lang-en="Main Cooling Method"><strong class="font-semibold">主な冷却方式</strong></td>
+                                <td data-lang-ja="液体冷却 (プレート型熱交換器)" data-lang-en="Liquid Cooling (Plate Heat Exchanger)"><strong class="font-semibold">液体冷却</strong> (プレート型熱交換器)</td>
+                                <td data-lang-ja="液浸冷却 (オイルシーリング)" data-lang-en="Immersion Cooling (Oil Sealing)"><strong class="font-semibold">液浸冷却</strong> (オイルシーリング)</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-ja="主なターゲット市場/用途" data-lang-en="Main Target Market/Application"><strong class="font-semibold">主なターゲット市場/用途</strong></td>
+                                <td data-lang-ja="多様な産業アプリケーション、船舶" data-lang-en="Various industrial applications, marine">多様な産業アプリケーション、船舶</td>
+                                <td data-lang-ja="ESS (特に大容量)" data-lang-en="ESS (especially large capacity)"><strong class="font-semibold">ESS (特に大容量)</strong></td>
+                            </tr>
+                            <tr>
+                                <td data-lang-ja="設計思想" data-lang-en="Design Philosophy"><strong class="font-semibold">設計思想</strong></td>
+                                <td data-lang-ja="モジュール設計、高いカスタマイズ性" data-lang-en="Modular design, high customizability"><strong class="font-semibold">モジュール設計</strong>、高いカスタマイズ性</td>
+                                <td data-lang-ja="モジュール設計、高環境耐性 (IP65+)" data-lang-en="Modular design, high environmental resistance (IP65+)"><strong class="font-semibold">モジュール設計</strong>、<strong class="font-semibold">高環境耐性 (IP65+)</strong></td>
+                            </tr>
+                             <tr>
+                                <td data-lang-ja="最大DC電圧" data-lang-en="Max DC Voltage"><strong class="font-semibold">最大DC電圧</strong></td>
+                                <td data-lang-ja="～1100V DC (現行)<br>[会話情報] 1500V対応開発中" data-lang-en="~1100V DC (current)<br>[Conversation Info] 1500V compatibility under development">～1100V DC (現行)<br>[会話情報] <strong class="font-semibold">1500V対応開発中</strong></td>
+                                <td data-lang-ja="1500V DC (SAVEEN IM 4000)" data-lang-en="1500V DC (SAVEEN IM 4000)"><strong class="font-semibold">1500V DC</strong> (SAVEEN IM 4000)</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-ja="IP等級 (代表例)" data-lang-en="IP Rating (Typical Example)"><strong class="font-semibold">IP等級 (代表例)</strong></td>
+                                <td data-lang-ja="IP55 (電子機器コンパートメント)" data-lang-en="IP55 (electronics compartment)"><strong class="font-semibold">IP55</strong> (電子機器コンパートメント)</td>
+                                <td data-lang-ja="IP65 / NEMA 3R (SAVEEN IM 4000)" data-lang-en="IP65 / NEMA 3R (SAVEEN IM 4000)"><strong class="font-semibold">IP65 / NEMA 3R</strong> (SAVEEN IM 4000)</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-ja="周囲温度耐性 (代表例)" data-lang-en="Ambient Temperature Tolerance (Typical Example)"><strong class="font-semibold">周囲温度耐性 (代表例)</strong></td>
+                                <td data-lang-ja="-15℃～60℃ (定格運転)" data-lang-en="-15°C to 60°C (rated operation)">-15℃～60℃ (定格運転)</td>
+                                <td data-lang-ja="-20℃～+50℃ (ディレーティングなし)" data-lang-en="-20°C to +50°C (no derating)">-20℃～+50℃ (<strong class="font-semibold">ディレーティングなし</strong>)</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-ja="コスト競争力に関する情報" data-lang-en="Information on Cost Competitiveness"><strong class="font-semibold">コスト競争力に関する情報</strong></td>
+                                <td data-lang-ja="[会話情報] MD比で競争力あり (現地生産等)" data-lang-en="[Conversation Info] Competitive against MD (local production, etc.)">[会話情報] <strong class="font-semibold">MD比で競争力あり</strong> (現地生産等)</td>
+                                <td data-lang-ja="[会話情報] 液浸でも冷却性能向上によるスペックダウン等で競争力期待" data-lang-en="[Conversation Info] Expectation of competitiveness even with immersion due to spec-down from improved cooling, etc.">[会話情報] 液浸でも冷却性能向上によるスペックダウン等で<strong class="font-semibold">競争力期待</strong></td>
+                            </tr>
+                            <tr>
+                                <td data-lang-ja="特筆すべき技術/特徴" data-lang-en="Noteworthy Technology/Features"><strong class="font-semibold">特筆すべき技術/特徴</strong></td>
+                                <td data-lang-ja="実績ある液体冷却、高いモジュール性、幅広いオプション、船舶認証" data-lang-en="Proven liquid cooling, high modularity, wide options, marine certification">実績ある液体冷却、高いモジュール性、幅広いオプション、船舶認証</td>
+                                <td data-lang-ja="革新的液浸冷却、高IP等級、高温環境でのディレーティングなし運転" data-lang-en="Innovative immersion cooling, high IP rating, no derating in high-temp environments">革新的液浸冷却、高IP等級、高温環境でのディレーティングなし運転</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-ja="今後の開発動向 (会話情報より)" data-lang-en="Future Development Trends (from Conversation Info)"><strong class="font-semibold">今後の開発動向 (会話情報より)</strong></td>
+                                <td data-lang-ja="ラック型インバーター" data-lang-en="Rack-type inverters">ラック型インバーター</td>
+                                <td data-lang-ja="SAVEEN IM 4000 (2025年商用化予定)" data-lang-en="SAVEEN IM 4000 (commercialization scheduled for 2025)">SAVEEN IM 4000 (<strong class="font-semibold">2025年商用化予定</strong>)</td>
+                            </tr>
+                             <tr>
+                                <td data-lang-ja="デジタルツール" data-lang-en="Digital Tools"><strong class="font-semibold">デジタルツール</strong></td>
+                                <td data-lang-ja="MyDrive® Suite (選定・シミュレーション)" data-lang-en="MyDrive® Suite (selection/simulation)">MyDrive® Suite (選定・シミュレーション)</td>
+                                <td data-lang-ja="記載なし (ただしModbus, IEC61850等サポート)" data-lang-en="Not specified (but supports Modbus, IEC61850, etc.)">記載なし (ただしModbus, IEC61850等サポート)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button id="predictTrendButton" class="gemini-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L1.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.25 12L17.437 14.846a4.5 4.5 0 01-3.09 3.09L11.5 21l2.846-.813a4.5 4.5 0 013.09-3.09L20.25 14.25l-2.846-.813a4.5 4.5 0 01-3.09-3.09L11.5 7.5l2.846.813a4.5 4.5 0 013.09 3.09L20.25 12z" />
+                    </svg>
+                    <span data-lang-key="predict_trend_button_text" data-lang-ja="✨ PCS技術トレンドを予測" data-lang-en="✨ Predict PCS Tech Trends">✨ PCS技術トレンドを予測</span>
+                </button>
+                <p class="mt-4 text-sm text-gray-600" data-lang-ja="注: 上記は提供された情報に基づく比較であり、全ての製品ラインナップや詳細仕様を網羅するものではありません。「会話情報」は出張時のヒアリングに基づくものです。" data-lang-en="Note: The above comparison is based on the information provided and does not cover all product lineups or detailed specifications. 'Conversation Info' is based on hearings during the business trip.">注: 上記は提供された情報に基づく比較であり、全ての製品ラインナップや詳細仕様を網羅するものではありません。「会話情報」は出張時のヒアリングに基づくものです。</p>
+            </div>
+        </div>
+
+        <div id="benchmark_graph" class="tab-content">
+            <div class="card">
+                <h2 class="section-title" data-lang-key="benchmark_graph_title_usd" data-lang-ja="価格ベンチマークグラフ (USDベース)" data-lang-en="Price Benchmark Graph (USD Basis)">価格ベンチマークグラフ (USDベース)</h2>
+                <p class="mb-4" data-lang-key="benchmark_graph_desc_usd" data-lang-ja="ご提供いただいたデータに基づき、各社PCSの容量(kW)と価格(k$)の関係、およびSinexcel社のデータに基づく線形近似線を示した散布図です。" data-lang-en="This scatter plot shows the relationship between capacity (kW) and price (k$) for each company's PCS based on the provided data, along with a linear regression line for Sinexcel.">ご提供いただいたデータに基づき、各社PCSの容量(kW)と価格(k$)の関係、およびSinexcel社のデータに基づく線形近似線を示した散布図です。</p>
+                <div class="benchmark-graph-container my-4 p-4 border border-gray-200 rounded-lg bg-gray-50 flex justify-center">
+                    <img src="pcs_price_benchmark_scatter_plot_usd_v9.png" alt="PCS Price Benchmark Scatter Plot (USD)"
+                         onerror="this.alt='グラフ画像の読み込みに失敗しました。ファイル名 pcs_price_benchmark_scatter_plot_usd_v9.png を確認してください。'; this.src='https://placehold.co/600x400/EEE/333?text=Graph+Image+Not+Found';">
+                </div>
+                <div class="conversation-info">
+                     <p data-lang-key="benchmark_graph_note_content_usd_v2" data-lang-ja="[グラフ注記] 赤色の点線は、Sinexcel社の提供データポイントに基づく線形近似線です。各プロットにはメーカー名、容量(kW)、価格(k$)、およびkW単価($/kW)が記載されています。Kehua社のデータは今回提供されていないため、このグラフには含まれていません。" data-lang-en="[Graph Note] The red dotted line is a linear regression line based on the provided Sinexcel data points. Each plot is labeled with the manufacturer, capacity (kW), price (k$), and price per kW ($/kW). Kehua's data was not provided for this graph and is therefore not included."><strong>[グラフ注記]</strong> 赤色の点線は、Sinexcel社の提供データポイントに基づく線形近似線です。各プロットにはメーカー名、容量(kW)、価格(k$)、およびkW単価($/kW)が記載されています。Kehua社のデータは今回提供されていないため、このグラフには含まれていません。</p>
+                </div>
+                 <div class="mt-4">
+                    <h3 class="sub-section-title" data-lang-key="sinexcel_regression_title" data-lang-ja="Sinexcel 線形回帰データ" data-lang-en="Sinexcel Linear Regression Data">Sinexcel 線形回帰データ</h3>
+                    <p data-lang-key="sinexcel_slope_v2" data-lang-ja="傾き (k$/kW): <strong class='font-semibold'>0.047</strong>" data-lang-en="Slope (k$/kW): <strong class='font-semibold'>0.047</strong>">傾き (k$/kW): <strong class='font-semibold'>0.047</strong></p>
+                    <p data-lang-key="sinexcel_intercept_v2" data-lang-ja="切片 (k$): <strong class='font-semibold'>16.93</strong>" data-lang-en="Intercept (k$): <strong class='font-semibold'>16.93</strong>">切片 (k$): <strong class='font-semibold'>16.93</strong></p>
+                    <p data-lang-key="sinexcel_equation_v2" data-lang-ja="近似式: 価格(k$) ≈ 0.047 × 容量(kW) + 16.93" data-lang-en="Approx. Equation: Price(k$) ≈ 0.047 × Capacity(kW) + 16.93">近似式: 価格(k$) ≈ 0.047 × 容量(kW) + 16.93</p>
+                </div>
+                <div class="mt-4 overflow-x-auto">
+                    <h3 class="sub-section-title" data-lang-key="source_data_title_usd" data-lang-ja="グラフ元データ (USDベース)" data-lang-en="Graph Source Data (USD Basis)">グラフ元データ (USDベース)</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th data-lang-key="table_header_manufacturer" data-lang-ja="メーカー" data-lang-en="Manufacturer">メーカー</th>
+                                <th data-lang-key="table_header_capacity_kw" data-lang-ja="容量 (kW)" data-lang-en="Capacity (kW)">容量 (kW)</th>
+                                <th data-lang-key="table_header_price_kd" data-lang-ja="価格 (k$)" data-lang-en="Price (k$)">価格 (k$)</th>
+                                <th data-lang-key="table_header_price_per_kw_d" data-lang-ja="kW単価 ($/kW)" data-lang-en="Price per kW ($/kW)">kW単価 ($/kW)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Sinexcel</td><td>160</td><td>25</td><td data-price-per-kw="156.25">156.25</td></tr>
+                            <tr><td>Sinexcel</td><td>500</td><td>40</td><td data-price-per-kw="80.00">80.00</td></tr>
+                            <tr><td>Sinexcel</td><td>1750</td><td>100</td><td data-price-per-kw="57.14">57.14</td></tr>
+                            <tr><td>Fuji</td><td>2800</td><td>240</td><td data-price-per-kw="85.71">85.71</td></tr>
+                            <tr><td>LS</td><td>700</td><td>110</td><td data-price-per-kw="157.14">157.14</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="summary" class="tab-content">
+            <div class="card">
+                <h2 class="section-title" data-lang-ja="5. まとめ" data-lang-en="5. Summary">5. まとめ</h2>
+                <p class="mb-4" data-lang-ja="今回の出張調査により、両社のPCSに関する最新情報を得ることができました。" data-lang-en="Through this business trip investigation, we were able to obtain the latest information on PCS from both companies.">今回の出張調査により、両社のPCSに関する最新情報を得ることができました。</p>
+                
+                <h3 class="sub-section-title" data-lang-ja="Danfoss社" data-lang-en="Danfoss">Danfoss社</h3>
+                <ul class="list-disc list-inside space-y-1 mb-4">
+                    <li data-lang-ja="実績ある<strong class='font-semibold'>液体冷却技術</strong>と<strong class='font-semibold'>モジュール設計</strong>による高い<strong class='font-semibold'>柔軟性・信頼性</strong>が強み。" data-lang-en="Strengths include high <strong class='font-semibold'>flexibility and reliability</strong> due to proven <strong class='font-semibold'>liquid cooling technology</strong> and <strong class='font-semibold'>modular design</strong>.">実績ある<strong class='font-semibold'>液体冷却技術</strong>と<strong class='font-semibold'>モジュール設計</strong>による高い<strong class='font-semibold'>柔軟性・信頼性</strong>が強み。</li>
+                    <li data-lang-ja="幅広い製品ラインナップとカスタマイズオプション。" data-lang-en="Wide product lineup and customization options.">幅広い製品ラインナップとカスタマイズオプション。</li>
+                    <li data-lang-ja="<strong class='font-semibold'>1500V対応製品</strong>の開発も進行中。" data-lang-en="Development of <strong class='font-semibold'>1500V compatible products</strong> is also underway."><strong class='font-semibold'>1500V対応製品</strong>の開発も進行中。</li>
+                </ul>
+
+                <h3 class="sub-section-title" data-lang-ja="Destin Power社" data-lang-en="Destin Power">Destin Power社</h3>
+                <ul class="list-disc list-inside space-y-1 mb-4">
+                    <li data-lang-ja="革新的な<strong class='font-semibold'>液浸冷却技術</strong>をESS用大容量PCSに採用し、<strong class='font-semibold'>高効率・高信頼性・高環境耐性</strong>を追求。" data-lang-en="Adopts innovative <strong class='font-semibold'>immersion cooling technology</strong> for large-capacity ESS PCS, pursuing <strong class='font-semibold'>high efficiency, high reliability, and high environmental resistance</strong>.">革新的な<strong class='font-semibold'>液浸冷却技術</strong>をESS用大容量PCSに採用し、<strong class='font-semibold'>高効率・高信頼性・高環境耐性</strong>を追求。</li>
+                    <li data-lang-ja="特に<strong class='font-semibold'>SAVEEN IM 4000</strong>は、<strong class='font-semibold'>ディレーティングなし</strong>の広範な温度対応や<strong class='font-semibold'>高い保護等級</strong>が特徴。" data-lang-en="<strong class='font-semibold'>SAVEEN IM 4000</strong>, in particular, features wide temperature compatibility <strong class='font-semibold'>without derating</strong> and a <strong class='font-semibold'>high protection rating</strong>.">特に<strong class='font-semibold'>SAVEEN IM 4000</strong>は、<strong class='font-semibold'>ディレーティングなし</strong>の広範な温度対応や<strong class='font-semibold'>高い保護等級</strong>が特徴。</li>
+                    <li data-lang-ja="<strong class='font-semibold'>コスト競争力</strong>も意識した開発。" data-lang-en="Development conscious of <strong class='font-semibold'>cost competitiveness</strong>."><strong class='font-semibold'>コスト競争力</strong>も意識した開発。</li>
+                </ul>
+                <p data-lang-ja="これらの情報は、今後のPCS選定や技術動向把握において重要な参考情報となります。" data-lang-en="This information will be important reference material for future PCS selection and understanding technology trends.">これらの情報は、今後のPCS選定や技術動向把握において重要な参考情報となります。</p>
+            </div>
+             <div class="card mt-6">
+                <h2 class="section-title" data-lang-ja="6. 質疑応答" data-lang-en="6. Q&A">6. 質疑応答</h2>
+                <p data-lang-ja="ご清聴ありがとうございました。ご質問等ございましたら、お願いいたします。" data-lang-en="Thank you for your attention. Please ask if you have any questions.">ご清聴ありがとうございました。ご質問等ございましたら、お願いいたします。</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="popupContainer" class="hidden">
+        <div class="popup-overlay" id="popup-overlay-el"></div>
+        <div class="popup">
+            <button class="popup-close-button" id="popup-close-btn">&times;</button>
+            <div id="popupTitle" class="text-xl font-semibold mb-4"></div>
+            <div id="popupContent" class="popup-content">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLanguage = 'ja'; 
+        const apiKey = ""; 
+
+        const translations = {
+            "main_title": { "ja": "韓国出張報告（5月22−24）", "en": "Korea Business Trip Report (May 22-24)" },
+            "tab_company_overview": { "ja": "会社概要", "en": "Company Overview" },
+            "tab_danfoss_pcs": { "ja": "Danfoss社 PCS", "en": "Danfoss PCS" },
+            "tab_destin_pcs": { "ja": "Destin Power社 PCS", "en": "Destin Power PCS" },
+            "tab_comparison": { "ja": "製品比較", "en": "Product Comparison" },
+            "tab_benchmark_graph": { "ja": "価格BMグラフ", "en": "Price BM Graph" },
+            "tab_summary": { "ja": "まとめ", "en": "Summary" },
+            "explain_term_button": { "ja": "解説", "en": "Explain" },
+            "predict_trend_button_text": { "ja": "✨ PCS技術トレンドを予測", "en": "✨ Predict PCS Tech Trends" },
+            "popup_title_trend": { "ja": "✨ PCS技術トレンド予測結果", "en": "✨ PCS Tech Trend Prediction Results" },
+            "popup_title_explain": { "ja": "✨ 用語解説", "en": "✨ Term Explanation" },
+            "loading_text": { "ja": "生成中...", "en": "Generating..." },
+            "error_fetch_text": { "ja": "情報を取得できませんでした。しばらくしてからもう一度お試しください。", "en": "Could not retrieve information. Please try again later." },
+            "info_prefix": { "ja": "[会話情報]", "en": "[Conversation Info]" },
+            "co_skenmove_note_prefix": { "ja": "[補足]", "en": "[Note]" },
+            "benchmark_graph_title_usd": { "ja": "価格ベンチマークグラフ (USDベース)", "en": "Price Benchmark Graph (USD Basis)" },
+            "benchmark_graph_desc_usd": { "ja": "ご提供いただいたデータに基づき、各社PCSの容量(kW)と価格(k$)の関係、およびSinexcel社のデータに基づく線形近似線を示した散布図です。", "en": "This scatter plot shows the relationship between capacity (kW) and price (k$) for each company's PCS based on the provided data, along with a linear regression line for Sinexcel." },
+            "benchmark_graph_note_prefix_usd": { "ja": "[グラフ注記]", "en": "[Graph Note]" },
+            "benchmark_graph_note_content_usd_v2": { "ja": "赤色の点線は、Sinexcel社の提供データポイントに基づく線形近似線です。各プロットにはメーカー名、容量(kW)、価格(k$)、およびkW単価($/kW)が記載されています。Kehua社のデータは今回提供されていないため、このグラフには含まれていません。", "en": "The red dotted line is a linear regression line based on the provided Sinexcel data points. Each plot is labeled with the manufacturer, capacity (kW), price (k$), and price per kW ($/kW). Kehua's data was not provided for this graph and is therefore not included." },
+            "sinexcel_regression_title": { "ja": "Sinexcel 線形回帰データ", "en": "Sinexcel Linear Regression Data"},
+            "sinexcel_slope_v2": { "ja": "傾き (k$/kW): <strong class='font-semibold'>0.047</strong>", "en": "Slope (k$/kW): <strong class='font-semibold'>0.047</strong>"},
+            "sinexcel_intercept_v2": { "ja": "切片 (k$): <strong class='font-semibold'>16.93</strong>", "en": "Intercept (k$): <strong class='font-semibold'>16.93</strong>"},
+            "sinexcel_equation_v2": { "ja": "近似式: 価格(k$) ≈ 0.047 × 容量(kW) + 16.93", "en": "Approx. Equation: Price(k$) ≈ 0.047 × Capacity(kW) + 16.93"},
+            "source_data_title_usd": {"ja": "グラフ元データ (USDベース)", "en": "Graph Source Data (USD Basis)"},
+            "table_header_manufacturer": {"ja": "メーカー", "en": "Manufacturer"},
+            "table_header_capacity_kw": {"ja": "容量 (kW)", "en": "Capacity (kW)"},
+            "table_header_price_kd": {"ja": "価格 (k$)", "en": "Price (k$)"},
+            "table_header_price_per_kw_d": {"ja": "kW単価 ($/kW)", "en": "Price per kW ($/kW)"},
+            "co_title": { "ja": "1. 訪問企業概要", "en": "1. Visited Company Overview" },
+            "co_danfoss_desc": {
+                "ja": "デンマークに本社を置く、パワーソリューション、冷暖房、ドライブ技術などを提供するグローバル企業です。特に<strong class='font-semibold'>パワーエレクトロニクス分野</strong>では、産業用ドライブやパワーコンバーターで高い技術力を持ち、エネルギー効率の向上と持続可能性に貢献しています。今回の調査対象である<strong class='font-semibold'>iC7シリーズ</strong>は、同社の<strong class='font-semibold'>液体冷却技術</strong>を活かした高密度・高効率なパワーコンバーターです。",
+                "en": "A global company headquartered in Denmark, providing power solutions, heating/cooling, and drive technologies. Particularly in the <strong class='font-semibold'>power electronics field</strong>, they possess high technological capabilities in industrial drives and power converters, contributing to energy efficiency improvements and sustainability. The <strong class='font-semibold'>iC7 series</strong>, the subject of this investigation, is a high-density, high-efficiency power converter leveraging their <strong class='font-semibold'>liquid cooling technology</strong>."
+            },
+            "co_destin_desc": {
+                "ja": "韓国を拠点とする、<strong class='font-semibold'>パワーコンバージョンシステム（PCS）</strong>の専門メーカーです。特に<strong class='font-semibold'>エネルギー貯蔵システム（ESS）用PCS</strong>に注力しており、革新的な冷却技術（<strong class='font-semibold'>液浸冷却</strong>など）を積極的に採用しています。高効率、高信頼性、そして過酷な環境にも対応可能なPCSソリューションを提供し、再生可能エネルギーの安定供給や電力系統の安定化に貢献することを目指しています。<strong class='font-semibold'>SAVEENシリーズ</strong>はその代表的な製品ラインです。",
+                "en": "A South Korea-based specialized manufacturer of <strong class='font-semibold'>Power Conversion Systems (PCS)</strong>. They focus particularly on <strong class='font-semibold'>PCS for Energy Storage Systems (ESS)</strong> and actively adopt innovative cooling technologies (such as <strong class='font-semibold'>immersion cooling</strong>). They aim to provide highly efficient, reliable PCS solutions adaptable to harsh environments, contributing to the stable supply of renewable energy and power grid stabilization. The <strong class='font-semibold'>SAVEEN series</strong> is their flagship product line."
+            },
+             "co_skenmove_summary": {
+                "ja": "韓国SKグループの一員で、エネルギー・化学分野で事業を展開。近年はデータセンター、ESS、EV向けに<strong class='font-semibold'>液浸冷却ソリューション</strong>と関連する高品質な<strong class='font-semibold'>熱媒体フルード（例：Therm ESシリーズ）</strong>の開発・提供に注力しています。これにより、バッテリーシステムやEV充電インフラの高度な熱管理と安全性向上に貢献しています。",
+                "en": "A member of South Korea's SK Group, operating in the energy and chemical sectors. In recent years, they have focused on developing and providing <strong class='font-semibold'>immersion cooling solutions</strong> and related high-quality <strong class='font-semibold'>thermal fluids (e.g., Therm ES series)</strong> for data centers, ESS, and EVs. This contributes to advanced thermal management and improved safety for battery systems and EV charging infrastructure."
+            },
+            "co_sksignet_summary": {
+                "ja": "SKグループ傘下のEV充電器メーカーで、米国の超急速充電器市場で高いシェアを誇ります。特に、<strong class='font-semibold'>500A対応の液冷式（油冷式）充電ケーブル</strong>を搭載した「V2 Distributed System」が主力製品の一つです。この技術は、ケーブルを<strong class='font-semibold'>大幅に軽量化</strong>し、最大<strong class='font-semibold'>400kWの高出力</strong>を維持しつつ操作性を向上させ、発熱問題を解決します。CCS1とNACSコネクタに両対応し、最大4台のEV同時充電が可能です。",
+                "en": "An EV charger manufacturer under the SK Group, holding a high share in the U.S. ultra-fast charger market. A key product is the 'V2 Distributed System,' featuring <strong class='font-semibold'>500A liquid-cooled (oil-cooled) charging cables</strong>. This technology significantly <strong class='font-semibold'>reduces cable weight</strong>, improves usability while maintaining high power output up to <strong class='font-semibold'>400kW</strong>, and solves heat issues. It supports both CCS1 and NACS connectors and can charge up to four EVs simultaneously."
+            },
+            "danfoss_main_title": { "ja": "2. Danfoss社 PCS (iC7シリーズ)", "en": "2. Danfoss PCS (iC7 Series)"},
+            "danfoss_main_desc": {
+                "ja": "Danfoss社の<strong class='font-semibold'>iC7シリーズ</strong>は、<strong class='font-semibold'>液体冷却システムモジュール</strong>を特徴とするパワーコンバーターであり、<strong class='font-semibold'>高いパワー密度</strong>と<strong class='font-semibold'>柔軟な統合性</strong>を提供します。",
+                "en": "Danfoss's <strong class='font-semibold'>iC7 series</strong> is a power converter featuring <strong class='font-semibold'>liquid cooling system modules</strong>, offering <strong class='font-semibold'>high power density</strong> and <strong class='font-semibold'>flexible integration</strong>."
+            },
+            "danfoss_accordion_features": { "ja": "2.1. 主な特徴", "en": "2.1. Main Features" },
+            "danfoss_features_modularity_title": { "ja": "<strong class='font-semibold'>モジュール設計</strong>とカスタマイズ性", "en": "<strong class='font-semibold'>Modular Design</strong> and Customizability" },
+            "danfoss_features_modularity_li1": {
+                "ja": "インバーターモジュール(INU)、AFEモジュール、グリッドコンバーター(GC)、DC/DCコンバーター等のシステムモジュールで構成され、組み合わせにより多様なアプリケーションに対応可能です。",
+                "en": "Composed of system modules such as inverter modules (INU), AFE modules, grid converters (GC), and DC/DC converters, adaptable to various applications through combination."
+            },
+            "danfoss_features_modularity_li2": { "ja": "複数モジュールの並列接続により<strong class='font-semibold'>大容量化が可能</strong>（INUは最大<strong class='font-semibold'>6400A</strong>）。", "en": "<strong class='font-semibold'>Large capacity achievable</strong> through parallel connection of multiple modules (INU up to <strong class='font-semibold'>6400A</strong>)." },
+            "danfoss_features_modularity_li3": { "ja": "システムモジュール単体またはフィルター等内蔵の統合ユニットを選択可能。", "en": "System modules alone or integrated units with built-in filters, etc., can be selected." },
+            "danfoss_features_modularity_li4": { "ja": "最大<strong class='font-semibold'>10個のオプションボード</strong>を追加でき、制御機能を拡張可能。", "en": "Up to <strong class='font-semibold'>10 option boards</strong> can be added to expand control functions." },
+            "danfoss_info_modularity": {
+                "ja": "<strong class='font-semibold'>モジュール設計</strong>により、PXインバーターとしての販売や、INUのみ購入し中国でエンクロージャー等を調達することも可能（サポート有）。",
+                "en": "Due to <strong class='font-semibold'>modular design</strong>, it's possible to sell as a PX inverter or purchase only the INU and procure enclosures, etc., from China (support available)."
+            },
+            "danfoss_features_cooling_title": { "ja": "<strong class='font-semibold'>冷却方式</strong>", "en": "<strong class='font-semibold'>Cooling Method</strong>" },
+            "danfoss_features_cooling_li1": { "ja": "<strong class='font-semibold'>液体冷却</strong>を採用し、業界最高水準の<strong class='font-semibold'>パワー密度</strong>と設置スペース・重量の削減を実現。", "en": "Employs <strong class='font-semibold'>liquid cooling</strong>, achieving industry-leading <strong class='font-semibold'>power density</strong> and reduction in installation space and weight." },
+            "danfoss_features_cooling_li2": { "ja": "<strong class='font-semibold'>廃熱再利用</strong>によるエネルギー効率向上。", "en": "Improved energy efficiency through <strong class='font-semibold'>waste heat recovery</strong>." },
+            "danfoss_features_cooling_li3": { "ja": "冷却水温度：<strong class='font-semibold'>-10℃～45℃</strong>（一部38℃）、周囲温度：<strong class='font-semibold'>-15℃～60℃</strong>で定格運転可能。", "en": "Coolant temperature: <strong class='font-semibold'>-10°C to 45°C</strong> (some products 38°C), ambient temperature: <strong class='font-semibold'>-15°C to 60°C</strong> for rated operation." },
+            "danfoss_info_cooling": {
+                "ja": "<strong class='font-semibold'>プレート型熱交換器</strong>を利用。空冷比で<strong class='font-semibold'>損失が大幅に低く</strong>、冷却効率が高い。ファン数が少なく<strong class='font-semibold'>静音性も高い</strong>。",
+                "en": "Uses <strong class='font-semibold'>plate heat exchangers</strong>. <strong class='font-semibold'>Significantly lower losses</strong> and higher cooling efficiency compared to air cooling. Fewer fans result in <strong class='font-semibold'>high quietness</strong>."
+            },
+            "danfoss_features_igbt_title": { "ja": "<strong class='font-semibold'>IGBT</strong>", "en": "<strong class='font-semibold'>IGBT</strong>" },
+            "danfoss_info_igbt": {
+                "ja": "インフィニオン、東芝、三菱、セミクロン（資本関係あり）などのメーカー製IGBTを使用。",
+                "en": "Uses IGBTs from manufacturers like Infineon, Toshiba, Mitsubishi, and Semikron (capital relationship)."
+            },
+            "danfoss_features_robustness_title": { "ja": "堅牢性と信頼性", "en": "Robustness and Reliability" },
+            "danfoss_features_robustness_li1": { "ja": "厳しい環境条件（振動、温度、湿度、塵埃/水分）に対応。<strong class='font-semibold'>IP55</strong>の電子機器コンパートメント。", "en": "Resistant to harsh environmental conditions (vibration, temperature, humidity, dust/moisture). <strong class='font-semibold'>IP55</strong> electronics compartment." },
+            "danfoss_info_robustness": {
+                "ja": "<strong class='font-semibold'>IP等級の高さ</strong>と<strong class='font-semibold'>故障の少なさ</strong>が船舶向け認証の鍵。液体冷却による熱負荷低減も寄与。",
+                "en": "<strong class='font-semibold'>High IP rating</strong> and <strong class='font-semibold'>low failure rate</strong> are key for marine certification. Reduced thermal load due to liquid cooling also contributes."
+            },
+            "danfoss_features_certs_title": { "ja": "認証", "en": "Certifications" },
+            "danfoss_features_certs_li1": { "ja": "主要船級協会（DNV, ABS, LR, BV, CCS）の型式承認を取得済みまたは取得中。", "en": "Type approval obtained or pending from major classification societies (DNV, ABS, LR, BV, CCS)." },
+            "danfoss_info_certs": { "ja": "<strong class='font-semibold'>船舶向け認証取得済み</strong>。", "en": "<strong class='font-semibold'>Marine certifications obtained</strong>." },
+            "danfoss_accordion_cost_voltage": { "ja": "2.2. コストと電圧対応", "en": "2.2. Cost and Voltage Compatibility" },
+            "danfoss_cost_title": { "ja": "コスト", "en": "Cost" },
+            "danfoss_info_cost": {
+                "ja": "<strong class='font-semibold'>1000kWクラスで2000万円弱程度</strong>。MD（競合/旧モデル？）と比較して<strong class='font-semibold'>価格競争力あり</strong>。現地工場での生産が理由の可能性（要確認）。",
+                "en": "<strong class='font-semibold'>Around just under 20 million JPY for a 1000kW class unit</strong>. <strong class='font-semibold'>Price competitive</strong> compared to MD (competitor/old model?). Possibility of local factory production as a reason (to be confirmed)."
+            },
+            "danfoss_voltage_title": { "ja": "電圧対応", "en": "Voltage Compatibility" },
+            "danfoss_voltage_li1": { "ja": "最大DC電圧クラス: <strong class='font-semibold'>07 (640-1100V DC)</strong>, <strong class='font-semibold'>B5 (465-800V DC)</strong>。", "en": "Max DC voltage class: <strong class='font-semibold'>07 (640-1100V DC)</strong>, <strong class='font-semibold'>B5 (465-800V DC)</strong>." },
+            "danfoss_info_voltage": { "ja": "<strong class='font-semibold'>1500V対応は現在開発中</strong>。一部試験運用ユニットあり。", "en": "<strong class='font-semibold'>1500V compatibility currently under development</strong>. Some trial units exist." },
+            "danfoss_accordion_future_dev": { "ja": "2.3. 今後の開発", "en": "2.3. Future Development" },
+            "danfoss_info_future_dev": { "ja": "<strong class='font-semibold'>ラック型のインバーターを開発中</strong>。", "en": "<strong class='font-semibold'>Developing rack-type inverters</strong>." },
+            "danfoss_accordion_digital_tools": { "ja": "2.4. デジタルツール", "en": "2.4. Digital Tools" },
+            "danfoss_digital_tools_desc": {
+                "ja": "<strong class='font-semibold'>MyDrive® Suite</strong>: 製品選定、サイジング、シミュレーションツールを提供し、開発期間短縮とリスク低減に貢献。",
+                "en": "<strong class='font-semibold'>MyDrive® Suite</strong>: Provides product selection, sizing, and simulation tools, contributing to reduced development time and risk."
+            },
+            "destin_main_title": { "ja": "3. Destin Power社 PCS", "en": "3. Destin Power PCS" },
+            "destin_main_desc": { "ja": "Destin Power社は、特に<strong class='font-semibold'>ESS用PCS</strong>に注力しており、持続可能なエネルギー革新を目指しています。", "en": "Destin Power focuses particularly on <strong class='font-semibold'>PCS for ESS</strong>, aiming for sustainable energy innovation." },
+            "destin_accordion_features": { "ja": "3.1. 主な特徴", "en": "3.1. Main Features" },
+            "destin_features_immersion_title": { "ja": "<strong class='font-semibold'>液浸冷却技術</strong>", "en": "<strong class='font-semibold'>Immersion Cooling Technology</strong>" },
+            "destin_features_immersion_li1": { "ja": "特に<strong class='font-semibold'>高容量ESS用PCS</strong>で<strong class='font-semibold'>液浸冷却</strong>を採用。", "en": "Employs <strong class='font-semibold'>immersion cooling</strong>, especially for <strong class='font-semibold'>high-capacity ESS PCS</strong>." },
+            "destin_features_immersion_li2": {
+                "ja": "冷却システム：PEBB TANK（IGBT格納部）、REACTOR TANKをCDUからのクーラントで直接冷却。熱交換器で外部冷却源（チラー等）へ熱を伝達。",
+                "en": "Cooling system: PEBB TANK (IGBT housing) and REACTOR TANK are directly cooled by coolant from a CDU. Heat is transferred to an external cooling source (chiller, etc.) via a heat exchanger."
+            },
+            "destin_info_immersion1": {
+                "ja": "IGBT基盤とリアクトルを別々のケースに入れ、<strong class='font-semibold'>絶縁性オイルを充填</strong>して冷却（<strong class='font-semibold'>オイルシーリング</strong>）。これによりPCS筐体は<strong class='font-semibold'>IP65以上</strong>の高防塵防水性能を確保。",
+                "en": "IGBT board and reactor are placed in separate cases and cooled by <strong class='font-semibold'>filling with insulating oil</strong> (<strong class='font-semibold'>oil sealing</strong>). This ensures high dust/water proofing (<strong class='font-semibold'>IP65+</strong>) for the PCS enclosure."
+            },
+            "destin_info_immersion2": {
+                "ja": "外部水源（海水・淡水）利用の<strong class='font-semibold'>プレート型熱交換器</strong>を採用。冷却回路は<strong class='font-semibold'>分離設計</strong>（外部水と機器冷却水は非接触）。",
+                "en": "Employs <strong class='font-semibold'>plate heat exchangers</strong> using external water sources (seawater/freshwater). The cooling circuit is a <strong class='font-semibold'>separate design</strong> (external water and equipment coolant do not directly contact)."
+            },
+            "destin_accordion_product_info": { "ja": "3.2. 製品情報 (SAVEENシリーズ)", "en": "3.2. Product Information (SAVEEN Series)" },
+            "destin_product_name": { "ja": "製品名: ESS用PCS「<strong class='font-semibold'>SAVEEN</strong>」。液浸冷却採用の大型PCSは「<strong class='font-semibold'>SAVEEN IM 4000</strong>」。", "en": "Product name: ESS PCS '<strong class='font-semibold'>SAVEEN</strong>'. Large PCS employing immersion cooling is '<strong class='font-semibold'>SAVEEN IM 4000</strong>'." },
+            "destin_product_実績": { "ja": "実績: 国内外で合計<strong class='font-semibold'>519台</strong>、<strong class='font-semibold'>474MW</strong>出荷 (2024年末時点)。", "en": "Track record: Total of <strong class='font-semibold'>519 units</strong>, <strong class='font-semibold'>474MW</strong> shipped domestically and internationally (as of end 2024)." },
+            "destin_product_specs_title": { "ja": "<strong class='font-semibold'>SAVEEN IM 4000</strong> 仕様", "en": "<strong class='font-semibold'>SAVEEN IM 4000</strong> Specifications" },
+            "destin_product_specs_li1": { "ja": "構成: <strong class='font-semibold'>4MW</strong>ステーション", "en": "Configuration: <strong class='font-semibold'>4MW</strong> station" },
+            "destin_product_specs_li2": { "ja": "最大DC許容電圧: <strong class='font-semibold'>1,500V</strong>", "en": "Max DC allowable voltage: <strong class='font-semibold'>1,500V</strong>" },
+            "destin_product_specs_li3": { "ja": "定格電力: <strong class='font-semibold'>4,000kW</strong>", "en": "Rated power: <strong class='font-semibold'>4,000kW</strong>" },
+            "destin_product_specs_li4": { "ja": "系統電圧: <strong class='font-semibold'>690V</strong>", "en": "Grid voltage: <strong class='font-semibold'>690V</strong>" },
+            "destin_product_specs_li5": { "ja": "通信: Modbus RTU/TCP, IEC61850, CAN", "en": "Communication: Modbus RTU/TCP, IEC61850, CAN" },
+            "destin_product_specs_li6": { "ja": "保護レベル: <strong class='font-semibold'>IP65 / NEMA 3R</strong>", "en": "Protection level: <strong class='font-semibold'>IP65 / NEMA 3R</strong>" },
+            "destin_product_specs_li7": { "ja": "運転温度範囲: <strong class='font-semibold'>-20℃ ～ +50℃</strong> (<strong class='font-semibold'>ディレーティングなし</strong>)", "en": "Operating temperature range: <strong class='font-semibold'>-20°C to +50°C</strong> (<strong class='font-semibold'>no derating</strong>)" },
+            "destin_product_design": { "ja": "設計: <strong class='font-semibold'>モジュール設計</strong>による容易なメンテナンス性。<strong class='font-semibold'>1+n設計</strong>による高い信頼性。<strong class='font-semibold'>3レベル技術</strong>。外部空気遮断により過酷環境に適応。", "en": "Design: Easy maintenance due to <strong class='font-semibold'>modular design</strong>. High reliability with <strong class='font-semibold'>1+n design</strong>. <strong class='font-semibold'>3-level technology</strong>. Adaptable to harsh environments by blocking external air." },
+            "destin_accordion_immersion_merits": { "ja": "3.3. 液浸冷却のメリット", "en": "3.3. Advantages of Immersion Cooling" },
+            "destin_merits_li1": { "ja": "電子部品の<strong class='font-semibold'>故障原因を削減</strong>（最大78%とされる要因）。", "en": "<strong class='font-semibold'>Reduces causes of electronic component failure</strong> (factors said to be up to 78%)." },
+            "destin_merits_li2": { "ja": "空冷式比で部品損傷や<strong class='font-semibold'>火災リスクを最小限に抑制</strong>。", "en": "<strong class='font-semibold'>Minimizes component damage and fire risk</strong> compared to air-cooled systems." },
+            "destin_merits_li3": { "ja": "オイル封入による<strong class='font-semibold'>IP65以上</strong>の高防塵防水性能（高湿度環境、産業用途で特に有効）。", "en": "<strong class='font-semibold'>High dust/water proofing (IP65+)</strong> due to oil sealing (particularly effective in high-humidity environments and industrial applications)." },
+            "destin_info_merits1": { "ja": "<strong class='font-semibold'>メンテナンス頻度の低減</strong>期待。", "en": "Expectation of <strong class='font-semibold'>reduced maintenance frequency</strong>." },
+            "destin_info_merits2": { "ja": "<strong class='font-semibold'>CAPEX（設備投資）の削減</strong>期待。", "en": "Expectation of <strong class='font-semibold'>CAPEX reduction</strong>." },
+            "destin_info_merits3": { "ja": "優れた冷却性能により<strong class='font-semibold'>電力容量が増加</strong>し、<strong class='font-semibold'>コスト競争力が向上</strong>。", "en": "<strong class='font-semibold'>Increased power capacity</strong> due to excellent cooling performance, <strong class='font-semibold'>improving cost competitiveness</strong>." },
+            "destin_merits_sub_li1": { "ja": "<strong class='font-semibold'>50℃までの環境温度で電力ディレーティングなし</strong>運転可能。", "en": "Operation possible <strong class='font-semibold'>without power derating at ambient temperatures up to 50°C</strong>." },
+            "destin_merits_sub_li2": { "ja": "IGBT定格電力の<strong class='font-semibold'>1.5倍運転</strong>、インダクターの安定した運転が可能。", "en": "Operation at <strong class='font-semibold'>1.5 times IGBT rated power</strong> and stable inductor operation possible." },
+            "destin_accordion_dev_cost": { "ja": "3.4. 開発スケジュールとコスト", "en": "3.4. Development Schedule and Cost" },
+            "destin_dev_title": { "ja": "開発スケジュール", "en": "Development Schedule" },
+            "destin_dev_desc": { "ja": "SAVEEN IM 4000は<strong class='font-semibold'>2025年商用化予定</strong>。", "en": "SAVEEN IM 4000 scheduled for <strong class='font-semibold'>commercialization in 2025</strong>." },
+            "destin_cost_title": { "ja": "コストレベル", "en": "Cost Level" },
+            "destin_info_cost": {
+                "ja": "液浸冷却でも、空冷で必要な部品が不要になることや、冷却性能が高いため性能を1.5倍程度まで引き出せるため、スペックダウンが可能であり、結果として<strong class='font-semibold'>コスト競争力があるレベルになる可能性</strong>。",
+                "en": "Even with immersion cooling, components needed for air cooling become unnecessary, and since cooling performance is high, performance can be drawn out to about 1.5 times, allowing for spec-down, <strong class='font-semibold'>potentially resulting in a cost-competitive level</strong>."
+            },
+            "destin_accordion_reliability_fire": { "ja": "3.5. 信頼性と火災事例", "en": "3.5. Reliability and Fire Incidents" },
+            "destin_reliability_title": { "ja": "信頼性", "en": "Reliability" },
+            "destin_info_reliability": { "ja": "液浸冷却による物理的遮断で<strong class='font-semibold'>故障・火災リスク低減期待</strong>。", "en": "Expectation of <strong class='font-semibold'>reduced failure/fire risk</strong> due to physical isolation by immersion cooling." },
+            "destin_fire_title": { "ja": "火災事例", "en": "Fire Incidents" },
+            "destin_info_fire": {
+                "ja": "2019年にLG製バッテリーとの組み合わせで火災事故発生。LG側バッテリー起因とみられるが、力関係によりDestin Power側も責任を負うことになった経緯があるとのことです（ソース資料外情報）。",
+                "en": "A fire incident occurred in 2019 in combination with LG batteries. It seems the issue originated from LG's batteries, but due to power dynamics, Destin Power also had to take responsibility (information not in source material)."
+            },
+            "comp_title": { "ja": "4. 製品比較: Danfoss vs Destin Power", "en": "4. Product Comparison: Danfoss vs Destin Power" },
+            "comp_desc": { "ja": "Danfoss社とDestin Power社のPCSに関する主な特徴を比較します。", "en": "Compares the main features of PCS from Danfoss and Destin Power." },
+            "comp_th_item": { "ja": "比較項目", "en": "Comparison Item" },
+            "comp_th_danfoss": { "ja": "Danfoss (iC7シリーズ)", "en": "Danfoss (iC7 Series)" },
+            "comp_th_destin": { "ja": "Destin Power (SAVEENシリーズ)", "en": "Destin Power (SAVEEN Series)" },
+            "comp_item_cooling": { "ja": "<strong class='font-semibold'>主な冷却方式</strong>", "en": "<strong class='font-semibold'>Main Cooling Method</strong>" },
+            "comp_danfoss_cooling": { "ja": "<strong class='font-semibold'>液体冷却</strong> (プレート型熱交換器)", "en": "<strong class='font-semibold'>Liquid Cooling</strong> (Plate Heat Exchanger)" },
+            "comp_destin_cooling": { "ja": "<strong class='font-semibold'>液浸冷却</strong> (オイルシーリング)", "en": "<strong class='font-semibold'>Immersion Cooling</strong> (Oil Sealing)" },
+            "comp_item_market": { "ja": "<strong class='font-semibold'>主なターゲット市場/用途</strong>", "en": "<strong class='font-semibold'>Main Target Market/Application</strong>" },
+            "comp_danfoss_market": { "ja": "多様な産業アプリケーション、船舶", "en": "Various industrial applications, marine" },
+            "comp_destin_market": { "ja": "<strong class='font-semibold'>ESS (特に大容量)</strong>", "en": "<strong class='font-semibold'>ESS (especially large capacity)</strong>" },
+            "comp_item_philosophy": { "ja": "<strong class='font-semibold'>設計思想</strong>", "en": "<strong class='font-semibold'>Design Philosophy</strong>" },
+            "comp_danfoss_philosophy": { "ja": "<strong class='font-semibold'>モジュール設計</strong>、高いカスタマイズ性", "en": "<strong class='font-semibold'>Modular design</strong>, high customizability" },
+            "comp_destin_philosophy": { "ja": "<strong class='font-semibold'>モジュール設計</strong>、<strong class='font-semibold'>高環境耐性 (IP65+)</strong>", "en": "<strong class='font-semibold'>Modular design</strong>, <strong class='font-semibold'>high environmental resistance (IP65+)</strong>" },
+            "comp_item_dc_voltage": { "ja": "<strong class='font-semibold'>最大DC電圧</strong>", "en": "<strong class='font-semibold'>Max DC Voltage</strong>" },
+            "comp_danfoss_dc_voltage": { "ja": "～1100V DC (現行)<br>[会話情報] <strong class='font-semibold'>1500V対応開発中</strong>", "en": "~1100V DC (current)<br>[Conversation Info] <strong class='font-semibold'>1500V compatibility under development</strong>" },
+            "comp_destin_dc_voltage": { "ja": "<strong class='font-semibold'>1500V DC</strong> (SAVEEN IM 4000)", "en": "<strong class='font-semibold'>1500V DC</strong> (SAVEEN IM 4000)" },
+            "comp_item_ip": { "ja": "<strong class='font-semibold'>IP等級 (代表例)</strong>", "en": "<strong class='font-semibold'>IP Rating (Typical Example)</strong>" },
+            "comp_danfoss_ip": { "ja": "<strong class='font-semibold'>IP55</strong> (電子機器コンパートメント)", "en": "<strong class='font-semibold'>IP55</strong> (electronics compartment)" },
+            "comp_destin_ip": { "ja": "<strong class='font-semibold'>IP65 / NEMA 3R</strong> (SAVEEN IM 4000)", "en": "<strong class='font-semibold'>IP65 / NEMA 3R</strong> (SAVEEN IM 4000)" },
+            "comp_item_temp": { "ja": "<strong class='font-semibold'>周囲温度耐性 (代表例)</strong>", "en": "<strong class='font-semibold'>Ambient Temperature Tolerance (Typical Example)</strong>" },
+            "comp_danfoss_temp": { "ja": "-15℃～60℃ (定格運転)", "en": "-15°C to 60°C (rated operation)" },
+            "comp_destin_temp": { "ja": "-20℃～+50℃ (<strong class='font-semibold'>ディレーティングなし</strong>)", "en": "-20°C to +50°C (<strong class='font-semibold'>no derating</strong>)" },
+            "comp_item_cost_info": { "ja": "<strong class='font-semibold'>コスト競争力に関する情報</strong>", "en": "<strong class='font-semibold'>Information on Cost Competitiveness</strong>" },
+            "comp_danfoss_cost_info": { "ja": "<strong class='font-semibold'>MD比で競争力あり</strong> (現地生産等)", "en": "<strong class='font-semibold'>Competitive against MD</strong> (local production, etc.)" },
+            "comp_destin_cost_info": { "ja": "液浸でも冷却性能向上によるスペックダウン等で<strong class='font-semibold'>競争力期待</strong>", "en": "Expectation of <strong class='font-semibold'>competitiveness</strong> even with immersion due to spec-down from improved cooling, etc." },
+            "comp_item_noteworthy": { "ja": "<strong class='font-semibold'>特筆すべき技術/特徴</strong>", "en": "<strong class='font-semibold'>Noteworthy Technology/Features</strong>" },
+            "comp_danfoss_noteworthy": { "ja": "実績ある液体冷却、高いモジュール性、幅広いオプション、船舶認証", "en": "Proven liquid cooling, high modularity, wide options, marine certification" },
+            "comp_destin_noteworthy": { "ja": "革新的液浸冷却、高IP等級、高温環境でのディレーティングなし運転", "en": "Innovative immersion cooling, high IP rating, no derating in high-temp environments" },
+            "comp_item_future_dev": { "ja": "<strong class='font-semibold'>今後の開発動向 (会話情報より)</strong>", "en": "<strong class='font-semibold'>Future Development Trends (from Conversation Info)</strong>" },
+            "comp_danfoss_future_dev": { "ja": "ラック型インバーター", "en": "Rack-type inverters" },
+            "comp_destin_future_dev": { "ja": "SAVEEN IM 4000 (<strong class='font-semibold'>2025年商用化予定</strong>)", "en": "SAVEEN IM 4000 (<strong class='font-semibold'>commercialization scheduled for 2025</strong>)" },
+            "comp_item_digital_tools": { "ja": "<strong class='font-semibold'>デジタルツール</strong>", "en": "<strong class='font-semibold'>Digital Tools</strong>" },
+            "comp_danfoss_digital_tools": { "ja": "MyDrive® Suite (選定・シミュレーション)", "en": "MyDrive® Suite (selection/simulation)" },
+            "comp_destin_digital_tools": { "ja": "記載なし (ただしModbus, IEC61850等サポート)", "en": "Not specified (but supports Modbus, IEC61850, etc.)" },
+            "comp_note": {
+                "ja": "注: 上記は提供された情報に基づく比較であり、全ての製品ラインナップや詳細仕様を網羅するものではありません。「会話情報」は出張時のヒアリングに基づくものです。",
+                "en": "Note: The above comparison is based on the information provided and does not cover all product lineups or detailed specifications. 'Conversation Info' is based on hearings during the business trip."
+            },
+            "summary_title": { "ja": "5. まとめ", "en": "5. Summary" },
+            "summary_desc": { "ja": "今回の出張調査により、両社のPCSに関する最新情報を得ることができました。", "en": "Through this business trip investigation, we were able to obtain the latest information on PCS from both companies." },
+            "summary_danfoss_title": { "ja": "Danfoss社", "en": "Danfoss" },
+            "summary_danfoss_li1": { "ja": "実績ある<strong class='font-semibold'>液体冷却技術</strong>と<strong class='font-semibold'>モジュール設計</strong>による高い<strong class='font-semibold'>柔軟性・信頼性</strong>が強み。", "en": "Strengths include high <strong class='font-semibold'>flexibility and reliability</strong> due to proven <strong class='font-semibold'>liquid cooling technology</strong> and <strong class='font-semibold'>modular design</strong>." },
+            "summary_danfoss_li2": { "ja": "幅広い製品ラインナップとカスタマイズオプション。", "en": "Wide product lineup and customization options." },
+            "summary_danfoss_li3": { "ja": "<strong class='font-semibold'>1500V対応製品</strong>の開発も進行中。", "en": "Development of <strong class='font-semibold'>1500V compatible products</strong> is also underway." },
+            "summary_destin_title": { "ja": "Destin Power社", "en": "Destin Power" },
+            "summary_destin_li1": { "ja": "革新的な<strong class='font-semibold'>液浸冷却技術</strong>をESS用大容量PCSに採用し、<strong class='font-semibold'>高効率・高信頼性・高環境耐性</strong>を追求。", "en": "Adopts innovative <strong class='font-semibold'>immersion cooling technology</strong> for large-capacity ESS PCS, pursuing <strong class='font-semibold'>high efficiency, high reliability, and high environmental resistance</strong>." },
+            "summary_destin_li2": { "ja": "特に<strong class='font-semibold'>SAVEEN IM 4000</strong>は、<strong class='font-semibold'>ディレーティングなし</strong>の広範な温度対応や<strong class='font-semibold'>高い保護等級</strong>が特徴。", "en": "<strong class='font-semibold'>SAVEEN IM 4000</strong>, in particular, features wide temperature compatibility <strong class='font-semibold'>without derating</strong> and a <strong class='font-semibold'>high protection rating</strong>." },
+            "summary_destin_li3": { "ja": "<strong class='font-semibold'>コスト競争力</strong>も意識した開発。", "en": "Development conscious of <strong class='font-semibold'>cost competitiveness</strong>." },
+            "summary_final_note": { "ja": "これらの情報は、今後のPCS選定や技術動向把握において重要な参考情報となります。", "en": "This information will be important reference material for future PCS selection and understanding technology trends." },
+            "qa_title": { "ja": "6. 質疑応答", "en": "6. Q&A" },
+            "qa_desc": { "ja": "ご清聴ありがとうございました。ご質問等ございましたら、お願いいたします。", "en": "Thank you for your attention. Please ask if you have any questions." }
+        };
+
+
+        function getTranslation(key, lang = currentLanguage) {
+            if (translations[key] && translations[key][lang]) {
+                return translations[key][lang];
+            }
+            if (translations[key] && translations[key]['ja']) return translations[key]['ja'];
+            if (translations[key] && translations[key]['en']) return translations[key]['en'];
+            return key; 
+        }
+        
+        function showPopup(titleKey, contentHtml) {
+            document.getElementById('popupTitle').innerHTML = getTranslation(titleKey); 
+            document.getElementById('popupContent').innerHTML = contentHtml;
+            document.getElementById('popupContainer').classList.remove('hidden');
+        }
+
+        function closePopup() {
+            document.getElementById('popupContainer').classList.add('hidden');
+            document.getElementById('popupContent').innerHTML = ''; 
+        }
+
+        async function fetchGeminiApiResponse(prompt, originalButton) {
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            const payload = {
+                contents: [{ role: "user", parts: [{ text: prompt }] }]
+            };
+
+            let originalButtonContent = originalButton.innerHTML; 
+            originalButton.innerHTML = `<div class="loading-spinner" style="width:1.25rem; height:1.25rem; border-width:2px; margin-right:0.5rem; display:inline-block;"></div> ${getTranslation('loading_text')}`;
+            originalButton.disabled = true;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) {
+                    console.error("API Error Response:", await response.text());
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                    console.error("Unexpected API response structure:", result);
+                    return getTranslation('error_fetch_text');
+                }
+            } catch (error) {
+                console.error("Error fetching Gemini API response:", error);
+                return getTranslation('error_fetch_text');
+            } finally {
+                originalButton.innerHTML = originalButtonContent; 
+                originalButton.disabled = false;
+                const textSpan = originalButton.querySelector('span[data-lang-key]'); 
+                if (textSpan) {
+                    const translationKey = textSpan.getAttribute('data-lang-key');
+                    textSpan.innerHTML = getTranslation(translationKey); 
+                }
+            }
+        }
+
+        async function predictPCSTrends() {
+            const predictButton = document.getElementById('predictTrendButton');
+            showPopup('popup_title_trend', '<div class="loading-spinner"></div>');
+
+            const danfossInfoJa = `Danfoss (iC7シリーズ): 主な冷却方式: 液体冷却, 設計思想: モジュール設計, 最大DC電圧: 1500V対応開発中, 特筆すべき技術: 実績ある液体冷却、船舶認証, 今後の開発動向: ラック型インバーター`;
+            const destinInfoJa = `Destin Power (SAVEENシリーズ): 主な冷却方式: 液浸冷却, 設計思想: 高環境耐性 (IP65+), 最大DC電圧: 1500V DC, 特筆すべき技術: 革新的液浸冷却、ディレーティングなし運転, 今後の開発動向: SAVEEN IM 4000 (2025年商用化)`;
+            const danfossInfoEn = `Danfoss (iC7 Series): Main Cooling: Liquid Cooling, Design: Modular, Max DC Voltage: 1500V dev, Noteworthy: Proven liquid cooling, Marine cert, Future: Rack-type`;
+            const destinInfoEn = `Destin Power (SAVEEN Series): Main Cooling: Immersion Cooling, Design: High env resistance (IP65+), Max DC Voltage: 1500V DC, Noteworthy: Innovative immersion cooling, No derating, Future: SAVEEN IM 4000 (2025 commercial)`;
+
+            const promptJa = `以下のPCS技術情報に基づいて、今後のパワーコンディショナ市場における主要な技術トレンドを3つ予測し、それぞれ簡潔に説明してください。\n\nDanfoss社:\n${danfossInfoJa}\n\nDestin Power社:\n${destinInfoJa}`;
+            const promptEn = `Based on the following PCS technology information, predict three major technology trends in the future power conditioner market and briefly explain each.\n\nDanfoss:\n${danfossInfoEn}\n\nDestin Power:\n${destinInfoEn}`;
+            
+            const prompt = (currentLanguage === 'ja') ? promptJa : promptEn;
+            
+            const resultText = await fetchGeminiApiResponse(prompt, predictButton);
+            document.getElementById('popupContent').innerHTML = `<p>${resultText.replace(/\n/g, '<br>')}</p>`;
+        }
+
+        async function explainTerm(termJa, termEn) {
+            const term = (currentLanguage === 'ja') ? termJa : termEn;
+            // const explainButton = event.currentTarget; // No longer needed as button is passed if required by fetchGeminiApiResponse
+
+            showPopup('popup_title_explain', '<div class="loading-spinner"></div>');
+            
+            const promptJa = `パワーコンディショナ技術における「${termJa}」とは何か、初心者にも分かりやすく、重要なポイントを強調して150字以内で説明してください。`;
+            const promptEn = `What is "${termEn}" in power conditioner technology? Explain it concisely for a beginner in about 70 words, highlighting key points.`;
+            const prompt = (currentLanguage === 'ja') ? promptJa : promptEn;
+
+            // Pass a dummy button or null if originalButton is not strictly needed by fetchGeminiApiResponse for this call
+            const resultText = await fetchGeminiApiResponse(prompt, document.createElement('button')); // Dummy button
+            document.getElementById('popupContent').innerHTML = `<p>${resultText.replace(/\n/g, '<br>')}</p>`;
+        }
+
+        function applyTranslation(el) {
+            const key = el.getAttribute('data-lang-key');
+            if (key) {
+                const translatedText = getTranslation(key);
+                if (el.tagName === 'IMG') { 
+                    el.alt = translatedText;
+                } else {
+                    el.innerHTML = translatedText;
+                }
+            } else { 
+                let text = el.getAttribute(`data-lang-${currentLanguage}`);
+                 if (el.classList.contains('conversation-info') && el.tagName === 'P') {
+                    const prefixKey = el.textContent.includes(getTranslation("co_skenmove_note_prefix", "ja")) || el.textContent.includes(getTranslation("co_skenmove_note_prefix", "en")) ||  (el.dataset.langJa && (el.dataset.langJa.includes(getTranslation("co_skenmove_note_prefix","ja")) || el.dataset.langEn.includes(getTranslation("co_skenmove_note_prefix","en")))) ? "co_skenmove_note_prefix" : (el.textContent.includes(getTranslation("benchmark_graph_note_prefix_usd", "ja")) || el.textContent.includes(getTranslation("benchmark_graph_note_prefix_usd", "en")) || (el.dataset.langJa && (el.dataset.langJa.includes(getTranslation("benchmark_graph_note_prefix_usd","ja")) || el.dataset.langEn.includes(getTranslation("benchmark_graph_note_prefix_usd","en")))) ? "benchmark_graph_note_prefix_usd" : "info_prefix");
+                    const currentPrefix = getTranslation(prefixKey, currentLanguage);
+                    let contentText = text;
+                    
+                    const jaPrefixPattern = new RegExp(`^<strong>${getTranslation(prefixKey, "ja")}</strong>\\s*`);
+                    const enPrefixPattern = new RegExp(`^<strong>${getTranslation(prefixKey, "en")}</strong>\\s*`);
+                    
+                    if (jaPrefixPattern.test(text)) {
+                        contentText = text.replace(jaPrefixPattern, "");
+                    } else if (enPrefixPattern.test(text)) {
+                        contentText = text.replace(enPrefixPattern, "");
+                    } else if (text.startsWith(getTranslation(prefixKey, "ja"))) {
+                         contentText = text.substring(getTranslation(prefixKey, "ja").length).trim();
+                    } else if (text.startsWith(getTranslation(prefixKey, "en"))) {
+                         contentText = text.substring(getTranslation(prefixKey, "en").length).trim();
+                    }
+                     el.innerHTML = `<strong>${currentPrefix}</strong> ${contentText}`;
+                } else if (el.closest('.conversation-info') && el.tagName === 'STRONG') { 
+                     const parentP = el.closest('p');
+                     let prefixKeyToUse = "info_prefix"; 
+                     if (parentP) {
+                         const pJaText = parentP.dataset.langJa || "";
+                         const pEnText = parentP.dataset.langEn || "";
+                         if (pJaText.includes(getTranslation("co_skenmove_note_prefix","ja")) || pEnText.includes(getTranslation("co_skenmove_note_prefix","en")) ) {
+                            prefixKeyToUse = "co_skenmove_note_prefix";
+                         } else if (pJaText.includes(getTranslation("benchmark_graph_note_prefix_usd","ja")) || pEnText.includes(getTranslation("benchmark_graph_note_prefix_usd","en")) ) {
+                            prefixKeyToUse = "benchmark_graph_note_prefix_usd";
+                         }
+                     }
+                     el.textContent = getTranslation(prefixKeyToUse, currentLanguage);
+                }
+                else if (text) {
+                     el.innerHTML = text;
+                }
+            }
+        }
+
+
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            document.documentElement.lang = lang;
+
+            document.getElementById('lang-ja').classList.toggle('active', lang === 'ja');
+            document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+
+            const elements = document.querySelectorAll('[data-lang-key], [data-lang-ja], [data-lang-en]');
+            elements.forEach(el => {
+                applyTranslation(el);
+            });
+            if (!document.getElementById('popupContainer').classList.contains('hidden')) {
+                const currentPopupTitleEl = document.getElementById('popupTitle');
+                 if (currentPopupTitleEl.innerHTML.includes(getTranslation('popup_title_trend', 'ja')) || currentPopupTitleEl.innerHTML.includes(getTranslation('popup_title_trend', 'en'))) { 
+                    currentPopupTitleEl.innerHTML = getTranslation('popup_title_trend');
+                } else if (currentPopupTitleEl.innerHTML.includes(getTranslation('popup_title_explain', 'ja')) || currentPopupTitleEl.innerHTML.includes(getTranslation('popup_title_explain', 'en'))) {
+                    currentPopupTitleEl.innerHTML = getTranslation('popup_title_explain');
+                }
+            }
+        }
+
+        function openTab(event, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            tablinks = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            document.getElementById(tabName).style.display = "block";
+            event.currentTarget.className += " active";
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial tab setup
+            document.getElementById('company_overview').style.display = 'block';
+            document.getElementById('danfoss').style.display = 'none';
+            document.getElementById('destin').style.display = 'none';
+            document.getElementById('comparison').style.display = 'none';
+            document.getElementById('benchmark_graph').style.display = 'none'; 
+            document.getElementById('summary').style.display = 'none';
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            if (tabButtons.length > 0) {
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                 document.querySelector('.tab-button[data-tab-target="company_overview"]').classList.add('active');
+            }
+            
+            // Tab button event listeners
+            tabButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    openTab(event, button.dataset.tabTarget);
+                });
+            });
+
+            // Language switch event listeners
+            document.getElementById('lang-ja').addEventListener('click', () => switchLanguage('ja'));
+            document.getElementById('lang-en').addEventListener('click', () => switchLanguage('en'));
+
+            // Accordion event listeners
+            const accordionButtons = document.querySelectorAll('.accordion-button');
+            accordionButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    button.classList.toggle('open');
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
+                });
+            });
+
+            // Term explanation button event listeners
+            document.querySelectorAll('.term-explain-button').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const termJa = button.dataset.termJa;
+                    const termEn = button.dataset.termEn;
+                    explainTerm(termJa, termEn);
+                });
+            });
+            
+            // Predict trends button event listener
+            const predictBtn = document.getElementById('predictTrendButton');
+            if(predictBtn) {
+                predictBtn.addEventListener('click', predictPCSTrends);
+            }
+
+            // Popup close button event listener
+            const popupCloseBtn = document.getElementById('popup-close-btn');
+            if(popupCloseBtn) {
+                popupCloseBtn.addEventListener('click', closePopup);
+            }
+            const popupOverlayEl = document.getElementById('popup-overlay-el');
+            if(popupOverlayEl) {
+                popupOverlayEl.addEventListener('click', closePopup);
+            }
+
+            // Initial language application
+            switchLanguage(currentLanguage); 
+        });
+    </script>
+</body>
+</html>
